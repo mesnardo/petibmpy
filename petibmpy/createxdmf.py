@@ -8,7 +8,7 @@ from .grid import read_grid_hdf5
 
 
 def write_xdmf(outpath, datadir, gridpath, name,
-               nstart, nt, nsave, dt):
+               dt, nstart=None, nt=None, nsave=None, states=None):
     """Write a XDMF file to read the solution of a PetIBM variable.
 
     Parameters
@@ -21,14 +21,17 @@ def write_xdmf(outpath, datadir, gridpath, name,
         Path of the file containing the gridline coordinates.
     name : string
         Name of the field variable.
-    nstart : integer
-        Starting time step.
-    nt : integer
-        Number of time steps.
-    nsave : integer
-        Frequency of saving in number of time steps.
     dt : float
         Time-increment value.
+    nstart : integer (optional)
+        Starting time step; default: None.
+    nt : integer (optional)
+        Number of time steps; default: None.
+    nsave : integer (optional)
+        Frequency of saving in number of time steps; default: None.
+    states : list of integers (optional)
+        The list of time-step indices to consider in the XDMF file;
+        default: None.
 
     """
     # Initialize XDMF file.
@@ -51,7 +54,8 @@ def write_xdmf(outpath, datadir, gridpath, name,
     number_of_elements = ' '.join(str(n) for n in gridsize[::-1])
     precision = '8'
     # Get time-step indices and time values.
-    states = list(range(nstart, nstart + nt + 1, nsave))
+    if states is None:
+        states = list(range(nstart, nstart + nt + 1, nsave))
     times = [state * dt for state in states]
     # Generate the time series.
     for state, time in zip(states, times):
