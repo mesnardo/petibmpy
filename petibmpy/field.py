@@ -1,6 +1,7 @@
 """Module to read/write a PetIBM field variable."""
 
 import h5py
+import numpy
 
 
 def read_field_hdf5(filepath, name):
@@ -42,3 +43,29 @@ def write_field_hdf5(filepath, name, field):
     f.create_dataset(name, data=field)
     f.close()
     return
+
+
+def linear_interpolation(u, x, xi):
+    """Perform a linear interpolation along the first axis.
+
+    Parameters
+    ----------
+    u : numpy.ndarray
+        Array to interpolate.
+    x : numpy.ndarray
+        Gridline locations.
+    xi : float
+        Target location.
+
+    Returns
+    -------
+    ui : numpy.ndarray or float
+        Interpolated values.
+
+    """
+    idx = numpy.where(x < xi)[0][-1]
+    u0, u1 = u[idx], u[idx + 1]
+    x0, x1 = x[idx], x[idx + 1]
+    xd = (xi - x0) / (x1 - x0)
+    ui = (1 - xd) * u0 + xd * u1
+    return ui
