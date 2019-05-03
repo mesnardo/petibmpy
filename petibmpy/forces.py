@@ -1,24 +1,34 @@
 """Module with functions to process forces.."""
 
 import numpy
+import pathlib
 
 
-def read_forces(filepath):
-    """Read PetIBM forces from given file.
+def read_forces(*filepaths):
+    """Read PetIBM forces from given file(s).
+
+    If multiple files are provided, the histories are concatenated.
 
     Parameters
     ----------
-    filepath : string or pathlib.Path object
-        Path of the file to read.
+    filepaths : tuple of pathlib.Path objects or strings
+        Path of the files to load the history from.
 
     Returns
     -------
-    data : tuple of 4 numpy.ndarray objects
+    data : numpy.ndarray
         Time followed by the forces in the x, y, and z directions.
 
     """
-    with open(filepath, 'r') as infile:
-        data = numpy.loadtxt(infile, unpack=True)
+    if type(filepaths) in [str, pathlib.Path]:
+        filepaths = [filepaths]
+    for i, filepath in enumerate(filepaths):
+        with open(filepath, 'r') as infile:
+            subdata = numpy.loadtxt(infile, unpack=True)
+        if i == 0:
+            data = subdata
+        else:
+            data = numpy.concatenate((data, subdata), axis=1)
     return data
 
 
