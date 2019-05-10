@@ -1,5 +1,4 @@
 from .body import *
-from .cartesianmesh import *
 from .createxdmf import *
 from .extrude import *
 from .field import *
