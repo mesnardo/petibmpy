@@ -4,7 +4,7 @@ import math
 import numpy
 
 
-def rotation2d(x, y, center=(0.0, 0.0), angle=0.0, mode='deg'):
+def rotate2d(x, y, center=(0.0, 0.0), angle=0.0, mode='deg'):
     """Rotate (x, y) coordinates around a center.
 
     Parameters
@@ -39,9 +39,9 @@ def rotation2d(x, y, center=(0.0, 0.0), angle=0.0, mode='deg'):
     return x_new, y_new
 
 
-def rotation3d(x, y, z,
-               roll=0.0, yaw=0.0, pitch=0.0,
-               center=(0.0, 0.0, 0.0)):
+def rotate3d(x, y, z,
+             roll=0.0, yaw=0.0, pitch=0.0,
+             center=(0.0, 0.0, 0.0)):
     """Rotate 3D point.
 
     Parameters
@@ -88,6 +88,5 @@ def rotation3d(x, y, z,
     return xr, yr, zr
 
 
-rotation3d_vec = numpy.vectorize(rotation3d,
-                                 excluded=['roll', 'yaw', 'pitch',
-                                           'center'])
+rotate3d_vec = numpy.vectorize(rotate3d,
+                               excluded=['roll', 'yaw', 'pitch', 'center'])
