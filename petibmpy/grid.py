@@ -47,10 +47,12 @@ class CartesianGrid():
             Configuration of the grid.
 
         """
+        gridlines = {}
         for node in config:
             direction = node['direction']
             assert direction in self.gridlines.keys()
-            self.gridlines[direction] = GridLine(config=node)
+            gridlines[direction] = GridLine(config=node)
+        self.gridlines = gridlines
         self.n = self.get_number_cells()
 
     def get_number_cells(self):
@@ -90,7 +92,7 @@ class CartesianGrid():
             Number of digits to represent floats; default: 6.
 
         """
-        n_gridlines = [line.size for line in self.gridlines.values()]
+        n_gridlines = [line.size - 1 for line in self.gridlines.values()]
         nodes = [gridline.yaml_node(ndigits=ndigits)
                  for gridline in self.gridlines.values()]
         with open(filepath, 'w') as outfile:
