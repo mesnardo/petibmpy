@@ -2,6 +2,7 @@
 
 import h5py
 import numpy
+from scipy import interpolate
 
 
 def read_field_hdf5(filepath, name):
@@ -69,3 +70,35 @@ def linear_interpolation(u, x, xi):
     xd = (xi - x0) / (x1 - x0)
     ui = (1 - xd) * u0 + xd * u1
     return ui
+
+
+def interpolate3d(field, grid1, grid2, **kwargs):
+    """Interpolate a 3D field from one grid to another.
+
+    Parameters
+    ----------
+    field : numpy.ndarray
+        The 3D field to interpolate.
+    grid1 : tuple of numpy.ndarray objects
+        The grid on which the field is defined.
+        The grid should be provided as (x, y, z).
+    grid2 : tuple of numpy.ndarray objects
+        The grid on which to interpolate the field.
+        The grid should be provided as (x, y, z).
+    **kwargs : Arbitrary keyword arguments
+        To be passed to scipy.interpolate.interpn.
+
+    Returns
+    -------
+    field2 : numpy.ndarray
+        The interpolated 3D field.
+
+    """
+    x1, y1, z1 = grid1
+    x2, y2, z2 = grid2
+    n2 = x2.size * y2.size * z2.size
+    grid = numpy.array(numpy.meshgrid(z2, y2, x2, indexing='ij'))
+    grid = numpy.rollaxis(grid, 0, 4).reshape(n2, 3)
+    field2 = interpolate.interpn((z1, y1, x1), field, grid, **kwargs)
+    field2 = field2.reshape((z2.size, y2.size, x2.size))
+    return field2
