@@ -19,7 +19,7 @@ Small Python package to perform pre- and post-processing steps for a [PetIBM](ht
 With Anaconda:
 
 ```shell
-conda create env --name=py36-petibmpy --file=environment.yaml
+conda env create --name=py36-petibmpy --file=environment.yaml
 conda activate py36-petibmpy
 python setup.py develop
 ```
