@@ -357,3 +357,65 @@ def visit_plot_qcrit_wx_3d(xdmf_dir,
 
     visit_finalize()
     return
+
+
+def visit_plot_qcrit_wx_3d_direct(xdmf_path,
+                                  wx_range=(-5.0, 5.0),
+                                  q_value=0.1,
+                                  config_view=None,
+                                  out_dir=os.getcwd(), out_prefix='qcrit_wx_',
+                                  figsize=(1024, 1024),
+                                  state=None, states=None,
+                                  states_range=[0, None, 1]):
+    visit_initialize()
+
+    visit.OpenDatabase(str(xdmf_path), 0)
+
+    # Add a pseudocolor of the cell-centered streamwise vorticity.
+    visit.AddPlot('Pseudocolor', 'wx_cc', 1, 1)
+    PseudocolorAtts = visit.PseudocolorAttributes()
+    PseudocolorAtts.minFlag = 1
+    PseudocolorAtts.min = wx_range[0]
+    PseudocolorAtts.maxFlag = 1
+    PseudocolorAtts.max = wx_range[1]
+    PseudocolorAtts.colorTableName = 'RdBu'
+    PseudocolorAtts.invertColorTable = 1
+    PseudocolorAtts.opacityType = PseudocolorAtts.Constant
+    PseudocolorAtts.opacity = 0.8
+    PseudocolorAtts.legendFlag = 0
+    visit.SetPlotOptions(PseudocolorAtts)
+
+    # Add an isosurface of the Q-criterion.
+    visit.AddOperator('Isosurface', 1)
+    IsosurfaceAtts = visit.IsosurfaceAttributes()
+    IsosurfaceAtts.variable = 'qcrit'
+    IsosurfaceAtts.contourMethod = IsosurfaceAtts.Value
+    IsosurfaceAtts.contourValue = (q_value)
+    IsosurfaceAtts.scaling = IsosurfaceAtts.Linear
+    visit.SetOperatorOptions(IsosurfaceAtts, 1)
+
+    # Remove info about user, time, database, and legend.
+    AnnotationAtts = visit.AnnotationAttributes()
+    AnnotationAtts.userInfoFlag = 0
+    AnnotationAtts.databaseInfoFlag = 0
+    AnnotationAtts.timeInfoFlag = 0
+    AnnotationAtts.legendInfoFlag = 0
+    AnnotationAtts.axes3D.visible = 0
+    AnnotationAtts.axes3D.triadFlag = 1
+    AnnotationAtts.axes3D.bboxFlag = 0
+    visit.SetAnnotationAttributes(AnnotationAtts)
+
+    # Parse the 3D view configuration file.
+    if config_view is not None:
+        View3DAtts = visit_get_view(config_view, '3D')
+    visit.SetView3D(View3DAtts)
+
+    visit.SetActiveWindow(1)
+
+    states = visit_get_states(state=state, states=states,
+                              states_range=states_range)
+    visit_render_save_states(states, out_dir=out_dir, out_prefix=out_prefix,
+                             figsize=figsize)
+
+    visit_finalize()
+    return
