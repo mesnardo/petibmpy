@@ -130,9 +130,9 @@ def write_xdmf_multi(outpath, config,
                                         GridType='Collection',
                                         CollectionType='Temporal')
     # Read grid to get dimension and number of points.
-    name = list(config['data'].keys())[0]
+    master_name = list(config['data'].keys())[0]
     gridpath = config['grid']
-    grid = read_grid_hdf5(gridpath, name)
+    grid = read_grid_hdf5(gridpath, master_name)
     dim = len(grid)
     topology_type = '{}DRectMesh'.format(dim)
     geometry_type = 'VXVY' + (dim == 3) * 'VZ'
@@ -162,7 +162,8 @@ def write_xdmf_multi(outpath, config,
                                         NumberType='Float',
                                         Precision=precision,
                                         Format='HDF')
-            dataitem.text = ':/'.join([str(gridpath), name + '/' + component])
+            dataitem.text = ':/'.join([str(gridpath),
+                                       master_name + '/' + component])
         # Create XDMF block for each scalar field variable.
         for name, datadir in config['data'].items():
             attribute = etree.SubElement(grid, 'Attribute',
