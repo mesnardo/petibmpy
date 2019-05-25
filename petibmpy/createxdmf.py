@@ -8,7 +8,8 @@ from .grid import read_grid_hdf5
 
 
 def write_xdmf(outpath, datadir, gridpath, name,
-               nstart=None, nt=None, nsave=None, states=None):
+               nstart=None, nt=None, nsave=None,
+               states=None, times=None):
     """Write a XDMF file to read the solution of a PetIBM variable.
 
     Parameters
@@ -30,6 +31,8 @@ def write_xdmf(outpath, datadir, gridpath, name,
     states : list of integers (optional)
         The list of time-step indices to consider in the XDMF file;
         default: None.
+    times : list of floats (optional)
+        The list of time values; default: None.
 
     """
     # Initialize XDMF file.
@@ -55,12 +58,16 @@ def write_xdmf(outpath, datadir, gridpath, name,
     if states is None:
         states = list(range(nstart, nstart + nt + 1, nsave))
     # Generate the time series.
-    for state in states:
+    for i, state in enumerate(states):
         grid = etree.SubElement(grid_time_series, 'Grid',
                                 Name='Grid',
                                 GridType='Uniform')
+        if times is not None:
+            time_value = '{:.6f}'.format(times[i])
+        else:
+            time_value = '{:0>7}'.format(state)
         time = etree.SubElement(grid, 'Time',
-                                Value=str('{:0>7}'.format(state)))
+                                Value=time_value)
         topology = etree.SubElement(grid, 'Topology',
                                     TopologyType=topology_type,
                                     NumberOfElements=number_of_elements)
@@ -93,7 +100,8 @@ def write_xdmf(outpath, datadir, gridpath, name,
 
 
 def write_xdmf_multi(outpath, config,
-                     nstart=None, nt=None, nsave=None, states=None):
+                     nstart=None, nt=None, nsave=None,
+                     states=None, times=None):
     """Write a XDMF file to read the solution of multiple PetIBM variables.
 
     Parameters
@@ -117,6 +125,8 @@ def write_xdmf_multi(outpath, config,
     states : list of integers (optional)
         The list of time-step indices to consider in the XDMF file;
         default: None.
+    times : list of floats (optional)
+        The list of time values; default: None.
 
     """
     # Initialize XDMF file.
@@ -144,12 +154,16 @@ def write_xdmf_multi(outpath, config,
     if states is None:
         states = list(range(nstart, nstart + nt + 1, nsave))
     # Generate the time series.
-    for state in states:
+    for i, state in enumerate(states):
         grid = etree.SubElement(grid_time_series, 'Grid',
                                 Name='Grid',
                                 GridType='Uniform')
+        if times is not None:
+            time_value = '{:.6f}'.format(times[i])
+        else:
+            time_value = '{:0>7}'.format(state)
         time = etree.SubElement(grid, 'Time',
-                                Value=str('{:0>7}'.format(state)))
+                                Value=time_value)
         topology = etree.SubElement(grid, 'Topology',
                                     TopologyType=topology_type,
                                     NumberOfElements=number_of_elements)
