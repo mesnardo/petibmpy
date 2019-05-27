@@ -316,8 +316,8 @@ def visit_plot_qcrit_wx_3d(xdmf_dir,
     PseudocolorAtts.min = wx_range[0]
     PseudocolorAtts.maxFlag = 1
     PseudocolorAtts.max = wx_range[1]
-    PseudocolorAtts.colorTableName = 'RdBu'
-    PseudocolorAtts.invertColorTable = 1
+    PseudocolorAtts.colorTableName = 'viridis'
+    PseudocolorAtts.invertColorTable = 0
     PseudocolorAtts.opacityType = PseudocolorAtts.Constant
     PseudocolorAtts.opacity = 0.8
     PseudocolorAtts.legendFlag = 0
@@ -378,8 +378,8 @@ def visit_plot_qcrit_wx_3d_direct(xdmf_path,
     PseudocolorAtts.min = wx_range[0]
     PseudocolorAtts.maxFlag = 1
     PseudocolorAtts.max = wx_range[1]
-    PseudocolorAtts.colorTableName = 'RdBu'
-    PseudocolorAtts.invertColorTable = 1
+    PseudocolorAtts.colorTableName = 'viridis'
+    PseudocolorAtts.invertColorTable = 0
     PseudocolorAtts.opacityType = PseudocolorAtts.Constant
     PseudocolorAtts.opacity = 0.8
     PseudocolorAtts.legendFlag = 0
