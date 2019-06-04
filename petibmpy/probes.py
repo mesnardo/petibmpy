@@ -31,7 +31,8 @@ def read_probe_volume_hdf5(filepath, name, time):
         mesh = mesh + (mesh_group['z'][:],)
     mesh_sizes = [line.size for line in mesh]
     field_group = f[name]
-    time_str = str(round(time, ndigits=6))
+    time_str = '{:0.6f}'.format(round(time, ndigits=6))
     values = field_group[time_str][:]
     values = values.reshape(mesh_sizes[::-1])
+    f.close()
     return mesh, values
