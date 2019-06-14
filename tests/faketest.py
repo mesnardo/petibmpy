@@ -1,4 +1,4 @@
-"""Fake tests."""
+"""Fake tests... for now."""
 
 import unittest
 
