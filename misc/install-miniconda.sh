@@ -9,7 +9,7 @@ if [[ -d $MINICONDA_BIN ]]; then
 else
 	echo "INFO: Installing Miniconda"
 	wget https://repo.anaconda.com/miniconda/Miniconda3-4.5.12-Linux-x86_64.sh
-	bash Miniconda3-4.5.12-Linux-x86_64.sh -b -p -u $MINICONDA_DIR
+	bash Miniconda3-4.5.12-Linux-x86_64.sh -b -u -p $MINICONDA_DIR
 	rm -f Miniconda3-4.5.12-Linux-x86_64.sh
 fi
 
