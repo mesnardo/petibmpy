@@ -21,6 +21,10 @@ install:
 script:
 - python tests/all.py
 
+cache:
+  directories:
+  - $HOME/miniconda3
+
 notifications:
   email: false
 
