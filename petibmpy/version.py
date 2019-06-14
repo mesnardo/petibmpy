@@ -22,13 +22,12 @@ CLASSIFIERS = ['Development Status :: 1 - Alpha',
                'Operating System :: Unix',
                'Programming Language :: Python']
 
-description = 'petibmpy: PetIBM pre- and post-processing with Python'
+description = 'petibmpy: Python processing tools for PetIBM'
 # Long description will go up on the pypi page
 long_description = """
 petibmpy
-=====
-petibmpy is a library that contains routines to pre- and post-process
-the numerical solution from a PetIBM simulation.
+========
+Python processing tools for PetIBM.
 
 License
 =======
@@ -56,4 +55,4 @@ MICRO = _version_micro
 VERSION = __version__
 PACKAGES = ['petibmpy']
 PACKAGE_DATA = {'petibmpy': [os.path.join('styles', '*')]}
-REQUIRES = ['h5py', 'lxml', 'matplotlib', 'numpy', 'pyyaml']
+REQUIRES = ['h5py', 'lxml', 'matplotlib', 'numpy', 'pyyaml', 'scipy']
