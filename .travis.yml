@@ -7,23 +7,19 @@ sudo: false
 
 before_install:
 - MINICONDA_DIR=$HOME/miniconda3
-- rm -rf $MINICONDA_DIR
-- ./misc/install-miniconda.sh
+- wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+- bash Miniconda3-latest-Linux-x86_64.sh -b -p $MINICONDA_DIR
 - echo "source $MINICONDA_DIR/etc/profile.d/conda.sh" >> $HOME/.bashrc
 - source $HOME/.bashrc
 - conda activate
-- conda env create --name=py36 --file=environment.yaml
-- conda activate py36
 
 install:
+- conda env create --name=py36 --file=environment.yaml
+- conda activate py36
 - python setup.py install
 
 script:
 - python tests/all.py
-
-cache:
-  directories:
-  - $HOME/miniconda3
 
 notifications:
   email: false
