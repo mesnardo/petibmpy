@@ -102,3 +102,35 @@ def interpolate3d(field, grid1, grid2, **kwargs):
     field2 = interpolate.interpn((z1, y1, x1), field, grid, **kwargs)
     field2 = field2.reshape((z2.size, y2.size, x2.size))
     return field2
+
+
+def interpolate2d(field, grid1, grid2, **kwargs):
+    """Interpolate a 2D field from one grid to another.
+
+    Parameters
+    ----------
+    field : numpy.ndarray
+        The 2D field to interpolate.
+    grid1 : tuple of numpy.ndarray objects
+        The grid on which the field is defined.
+        The grid should be provided as (x, y).
+    grid2 : tuple of numpy.ndarray objects
+        The grid on which to interpolate the field.
+        The grid should be provided as (x, y).
+    **kwargs : Arbitrary keyword arguments
+        To be passed to scipy.interpolate.interpn.
+
+    Returns
+    -------
+    field2 : numpy.ndarray
+        The interpolated 2D field.
+
+    """
+    x1, y1 = grid1
+    x2, y2 = grid2
+    n2 = x2.size * y2.size
+    grid = numpy.array(numpy.meshgrid(y2, x2, indexing='ij'))
+    grid = numpy.rollaxis(grid, 0, 3).reshape(n2, 2)
+    field2 = interpolate.interpn((y1, x1), field, grid, **kwargs)
+    field2 = field2.reshape((y2.size, x2.size))
+    return field2
