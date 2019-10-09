@@ -22,23 +22,23 @@ CLASSIFIERS = ['Development Status :: 1 - Alpha',
                'Operating System :: Unix',
                'Programming Language :: Python']
 
-description = 'petibmpy: Python processing tools for PetIBM'
+description = 'PetibmPy: Python processing tools for PetIBM'
 # Long description will go up on the pypi page
 long_description = """
-petibmpy
+PetibmPy
 ========
 Python processing tools for PetIBM.
 
 License
 =======
-``petibmpy`` is licensed under the terms of the BSD 3-Clause license. See the
+PetibmPy is licensed under the terms of the BSD 3-Clause license. See the
 file "LICENSE" for information on the history of this software,
 terms & conditions for usage, and a DISCLAIMER OF ALL WARRANTIES.
 All trademarks referenced herein are property of their respective holders.
 Copyright (c) 2019, Olivier Mesnard.
 """
 
-NAME = 'petibmpy'
+NAME = 'PetibmPy'
 MAINTAINER = 'Olivier Mesnard'
 MAINTAINER_EMAIL = 'mesnardo@gwu.edu'
 DESCRIPTION = description

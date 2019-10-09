@@ -1,4 +1,4 @@
-# petibmpy: Python processing tools for PetIBM
+# PetibmPy: Python processing tools for PetIBM
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/mesnardo/petibmpy/raw/master/LICENSE)
 [![Travis](https://img.shields.io/travis/mesnardo/petibmpy/master.svg?style=flat-square&logo=travis)](https://travis-ci.org/mesnardo/petibmpy)

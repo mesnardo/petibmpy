@@ -1,0 +1,11 @@
+site_name: PetibmPy
+site_url: https://github.com/mesnardo/petibmpy
+repo_url: https://github.com/mesnardo/petibmpy
+theme: readthedocs
+docs_dir: docs
+site_dir: _site
+copyright: Code is licensed under BSD 3-Clause.
+nav:
+  - Home: index.md
+  - Changelog: changelog.md
+  - Contributing: contributing.md
