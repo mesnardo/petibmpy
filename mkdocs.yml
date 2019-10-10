@@ -9,3 +9,4 @@ nav:
   - Home: index.md
   - Changelog: changelog.md
   - Contributing: contributing.md
+  - API: api.md
