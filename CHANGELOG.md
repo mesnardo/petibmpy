@@ -8,6 +8,8 @@
 
 ### Added
 
+* Documentation with Mkdocs (built on gh-pages using doctr during Travis CI job).
+
 ### Changed
 
 ### Fixed
