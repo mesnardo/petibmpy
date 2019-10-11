@@ -3,7 +3,8 @@
 import sys
 import unittest
 
-tests = ['faketest']
+
+tests = ['test_rotate', 'test_forces']
 
 suite = unittest.TestSuite()
 

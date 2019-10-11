@@ -1,4 +1,4 @@
-"""Module with functions to process forces.."""
+"""Module with functions to process forces."""
 
 import numpy
 import pathlib
