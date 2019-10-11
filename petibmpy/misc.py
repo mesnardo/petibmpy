@@ -4,7 +4,7 @@ import collections
 import yaml
 
 
-class Sequence(list):
+class _Sequence(list):
     """Dummy class to store list/tuple in YAML file in pretty format."""
 
     pass
@@ -21,7 +21,7 @@ def _represent_limits(self, data):
                                    flow_style=True)
 
 
-def setup_yaml():
+def _setup_yaml():
     """Configure output format to YAML file."""
     yaml.add_representer(collections.OrderedDict, _represent_dictionary_order)
-    yaml.add_representer(Sequence, _represent_limits)
+    yaml.add_representer(_Sequence, _represent_limits)
