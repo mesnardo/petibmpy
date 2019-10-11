@@ -1,0 +1,15 @@
+site_name: PetibmPy
+loaders:
+  - type: python
+    modules: [petibmpy]
+    search_path: [.]
+processors:
+  - type: pydocmd
+  - type: filter
+    expression: not name.startswith('_') and not all(n.isupper() for n in name.split('_')[0]) and default()
+renderer:
+  type: markdown
+  filename: docs/api.md
+  html_headings: true
+  signature_in_header: true
+  signature_code_block: false

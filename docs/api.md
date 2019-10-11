@@ -2,45 +2,16 @@
 
   * [petibmpy](#petibmpy)
   * [petibmpy.probes](#petibmpy.probes)
-    * [read\_probe\_volume\_hdf5](#petibmpy.probes.read_probe_volume_hdf5)
-    * [get\_probe\_volume\_limits](#petibmpy.probes.get_probe_volume_limits)
+    * [ProbeVolume](#petibmpy.probes.ProbeVolume)
+    * [ProbePoint](#petibmpy.probes.ProbePoint)
+    * [Probe](#petibmpy.probes.Probe)
+    * [probes\_yaml\_dump](#petibmpy.probes.probes_yaml_dump)
   * [petibmpy.misc](#petibmpy.misc)
-    * [Sequence](#petibmpy.misc.Sequence)
-    * [\_represent\_dictionary\_order](#petibmpy.misc._represent_dictionary_order)
-    * [\_represent\_limits](#petibmpy.misc._represent_limits)
-    * [setup\_yaml](#petibmpy.misc.setup_yaml)
   * [petibmpy.forces](#petibmpy.forces)
     * [read\_forces](#petibmpy.forces.read_forces)
     * [get\_force\_coefficients](#petibmpy.forces.get_force_coefficients)
     * [get\_time\_averaged\_values](#petibmpy.forces.get_time_averaged_values)
   * [petibmpy.version](#petibmpy.version)
-    * [\_version\_major](#petibmpy.version._version_major)
-    * [\_version\_minor](#petibmpy.version._version_minor)
-    * [\_version\_micro](#petibmpy.version._version_micro)
-    * [\_version\_extra](#petibmpy.version._version_extra)
-    * [\_ver](#petibmpy.version._ver)
-    * [\_\_version\_\_](#petibmpy.version.__version__)
-    * [CLASSIFIERS](#petibmpy.version.CLASSIFIERS)
-    * [description](#petibmpy.version.description)
-    * [long\_description](#petibmpy.version.long_description)
-    * [NAME](#petibmpy.version.NAME)
-    * [MAINTAINER](#petibmpy.version.MAINTAINER)
-    * [MAINTAINER\_EMAIL](#petibmpy.version.MAINTAINER_EMAIL)
-    * [DESCRIPTION](#petibmpy.version.DESCRIPTION)
-    * [LONG\_DESCRIPTION](#petibmpy.version.LONG_DESCRIPTION)
-    * [URL](#petibmpy.version.URL)
-    * [DOWNLOAD\_URL](#petibmpy.version.DOWNLOAD_URL)
-    * [LICENSE](#petibmpy.version.LICENSE)
-    * [AUTHOR](#petibmpy.version.AUTHOR)
-    * [AUTHOR\_EMAIL](#petibmpy.version.AUTHOR_EMAIL)
-    * [PLATFORMS](#petibmpy.version.PLATFORMS)
-    * [MAJOR](#petibmpy.version.MAJOR)
-    * [MINOR](#petibmpy.version.MINOR)
-    * [MICRO](#petibmpy.version.MICRO)
-    * [VERSION](#petibmpy.version.VERSION)
-    * [PACKAGES](#petibmpy.version.PACKAGES)
-    * [PACKAGE\_DATA](#petibmpy.version.PACKAGE_DATA)
-    * [REQUIRES](#petibmpy.version.REQUIRES)
   * [petibmpy.field](#petibmpy.field)
     * [read\_field\_hdf5](#petibmpy.field.read_field_hdf5)
     * [write\_field\_hdf5](#petibmpy.field.write_field_hdf5)
@@ -71,105 +42,102 @@
     * [write\_xdmf](#petibmpy.createxdmf.write_xdmf)
     * [write\_xdmf\_multi](#petibmpy.createxdmf.write_xdmf_multi)
 
-# `petibmpy`
+<h1 id="petibmpy"><code>petibmpy</code></h1>
 
 
-# `petibmpy.probes`
+<h1 id="petibmpy.probes"><code>petibmpy.probes</code></h1>
 
-Module for the PetIBM probes.
+Module for PetIBM probes.
 
-## `read_probe_volume_hdf5()`
+<h2 id="petibmpy.probes.ProbeVolume"><code>ProbeVolume</code> Objects</h2>
 
-```python
-def read_probe_volume_hdf5(filepath, name, time)
-```
+Class for a volume probe (monitoring solution in sub-volume).
 
-Read a volume field from file at a given recorded time.
+<h3 id="petibmpy.probes.ProbeVolume.adjust_box"><code>ProbeVolume.adjust_box(self, grid, box=None)</code></h3>
+
+Adjust the box so that limits lie between two grid points.
 
 Parameters
 ----------
-filepath : pathlib.Path or string
-    Path of the file to read from.
-name : string
-    Name of the field to read.
+grid : list or numpy.ndarray
+    The grid of the field to minotor
+box : list or numpy.ndarray, optional
+    Estimated limits of the box, by default None
+
+<h3 id="petibmpy.probes.ProbeVolume.read_hdf5"><code>ProbeVolume.read_hdf5(self, filepath, time, ndigits=6)</code></h3>
+
+Read the probe from a HDF5 file at a given time.
+
+Parameters
+----------
+filepath : pathlib.Path or str
+    Path of file with the solution of the probe
 time : float
-    Time value at which the volume field was recorded.
+    Time value
+ndigits : int, optional
+    Number of digits to round the time value, by default 6
 
 Returns
 -------
-mesh : tuple of numpy.ndarray objects
-    The gridline coordinates of the volume.
-values : numpy.ndarray
-    The volume field.
+tuple
+    The mesh grid of the probe
+numpy.ndarray
+    The probe values
 
-## `get_probe_volume_limits()`
+<h2 id="petibmpy.probes.ProbePoint"><code>ProbePoint</code> Objects</h2>
 
-```python
-def get_probe_volume_limits(x, loc, neighbors=1, btype='both', decimals=6)
-```
+Class to monitor a field at a single point.
 
-Return the interval limits (left, right, or both).
+<h3 id="petibmpy.probes.ProbePoint.set_loc"><code>ProbePoint.set_loc(self, loc)</code></h3>
+
+Set the coordinates of the point to monitor.
 
 Parameters
 ----------
-x : 1D numpy.ndarray
-    The gridline coordinates.
-loc : float
-    Location for which to request the gridline boundaries.
-neighbors : integer (optional)
-    Number of neighbors to include as a buffer; default: 1.
-btype : string (optional)
-    Type of boundary to return;
-    choices: 'left', 'right, or 'both';
-    default: 'both'.
-decimals : integer (optional)
-    Number of digits used to round numbers; default: 6.
+loc : list or numpy.ndarray
+    Coordinates of the point
+
+<h2 id="petibmpy.probes.Probe"><code>Probe(ptype, args, *,, ,, kwargs)</code></h2>
+
+Create a probe.
+
+Parameters
+----------
+ptype : str
+    Type of the probe, choices are 'VOLUME' or 'POINT'
 
 Returns
 -------
-'left', 'right', or 'both' gridline boundaries.
+ProbeVolume or ProbePoint
+    The probe
 
-# `petibmpy.misc`
+Raises
+------
+ValueError
+    Type is neither 'VOLUME' nor 'POINT'
+
+<h2 id="petibmpy.probes.probes_yaml_dump"><code>probes_yaml_dump(probes, filepath, mode='w')</code></h2>
+
+Save the probes configuration in a YAML file.
+
+Parameters
+----------
+probes : list
+    The list of probes
+filepath : pathlib.Path or str
+    Path of the YAML file
+mode : str, optional
+    Mode to open file, choices are 'w' or 'a', by default 'w'
+
+<h1 id="petibmpy.misc"><code>petibmpy.misc</code></h1>
 
 Collection of miscellaneous functions and classes.
 
-## `Sequence` Objects
-
-Dummy class to store list/tuple in YAML file in pretty format.
-
-## `_represent_dictionary_order()`
-
-```python
-def _represent_dictionary_order(self, dict_data)
-```
-
-Pretty output of dictionary to YAML file.
-
-## `_represent_limits()`
-
-```python
-def _represent_limits(self, data)
-```
-
-Pretty output of list/tuple to YAML file.
-
-## `setup_yaml()`
-
-```python
-def setup_yaml()
-```
-
-Configure output format to YAML file.
-
-# `petibmpy.forces`
+<h1 id="petibmpy.forces"><code>petibmpy.forces</code></h1>
 
 Module with functions to process forces..
 
-## `read_forces()`
-
-```python
-def read_forces(filepaths)
-```
+<h2 id="petibmpy.forces.read_forces"><code>read_forces(filepaths)</code></h2>
 
 Read PetIBM forces from given file(s).
 
@@ -185,11 +153,7 @@ Returns
 data : numpy.ndarray
     Time followed by the forces in the x, y, and z directions.
 
-## `get_force_coefficients()`
-
-```python
-def get_force_coefficients(forces, *,, ,, =)
-```
+<h2 id="petibmpy.forces.get_force_coefficients"><code>get_force_coefficients(forces, *,, ,, =)</code></h2>
 
 Convert forces to force coefficients.
 
@@ -205,11 +169,7 @@ Returns
 force_coeffs : tuple of numpy.ndarray objects
     The force coefficients.
 
-## `get_time_averaged_values()`
-
-```python
-def get_time_averaged_values(t, forces, *,, ,, =)
-```
+<h2 id="petibmpy.forces.get_time_averaged_values"><code>get_time_averaged_values(t, forces, *,, ,, =)</code></h2>
 
 Compute the time-averaged values.
 
@@ -227,217 +187,15 @@ Returns
 means : tuple of floats
     The time-averaged values.
 
-# `petibmpy.version`
+<h1 id="petibmpy.version"><code>petibmpy.version</code></h1>
 
 Set up the version.
 
-## `_version_major`
-
-```python
-_version_major = 0
-```
-
-
-## `_version_minor`
-
-```python
-_version_minor = 1
-```
-
-
-## `_version_micro`
-
-```python
-_version_micro = ''
-```
-
-
-## `_version_extra`
-
-```python
-_version_extra = ''
-```
-
-
-## `_ver`
-
-```python
-_ver = [_version_major, _version_minor]
-```
-
-
-## `__version__`
-
-```python
-__version__ = '.'.join(map(str, _ver))
-```
-
-
-## `CLASSIFIERS`
-
-```python
-CLASSIFIERS = ['Development Status :: 1 - Alpha',
-               'Environment :: Console',
-               'License ...
-```
-
-
-## `description`
-
-```python
-description = 'PetibmPy: Python processing tools for PetIBM'
-```
-
-
-## `long_description`
-
-```python
-long_description = """
-PetibmPy
-========
-Python processing tools for PetIBM.
-
-License
-=======
-PetibmPy is licensed unde ...
-```
-
-
-## `NAME`
-
-```python
-NAME = 'PetibmPy'
-```
-
-
-## `MAINTAINER`
-
-```python
-MAINTAINER = 'Olivier Mesnard'
-```
-
-
-## `MAINTAINER_EMAIL`
-
-```python
-MAINTAINER_EMAIL = 'mesnardo@gwu.edu'
-```
-
-
-## `DESCRIPTION`
-
-```python
-DESCRIPTION = description
-```
-
-
-## `LONG_DESCRIPTION`
-
-```python
-LONG_DESCRIPTION = long_description
-```
-
-
-## `URL`
-
-```python
-URL = 'https://github.com/mesnardo/petibmpy'
-```
-
-
-## `DOWNLOAD_URL`
-
-```python
-DOWNLOAD_URL = ''
-```
-
-
-## `LICENSE`
-
-```python
-LICENSE = 'BSD 3-Clause'
-```
-
-
-## `AUTHOR`
-
-```python
-AUTHOR = ''
-```
-
-
-## `AUTHOR_EMAIL`
-
-```python
-AUTHOR_EMAIL = ''
-```
-
-
-## `PLATFORMS`
-
-```python
-PLATFORMS = 'Unix'
-```
-
-
-## `MAJOR`
-
-```python
-MAJOR = _version_major
-```
-
-
-## `MINOR`
-
-```python
-MINOR = _version_minor
-```
-
-
-## `MICRO`
-
-```python
-MICRO = _version_micro
-```
-
-
-## `VERSION`
-
-```python
-VERSION = __version__
-```
-
-
-## `PACKAGES`
-
-```python
-PACKAGES = ['petibmpy']
-```
-
-
-## `PACKAGE_DATA`
-
-```python
-PACKAGE_DATA = {'petibmpy': [os.path.join('styles', '*')]}
-```
-
-
-## `REQUIRES`
-
-```python
-REQUIRES = ['h5py', 'lxml', 'matplotlib', 'numpy', 'pyyaml', 'scipy']
-```
-
-
-# `petibmpy.field`
+<h1 id="petibmpy.field"><code>petibmpy.field</code></h1>
 
 Module to read/write a PetIBM field variable.
 
-## `read_field_hdf5()`
-
-```python
-def read_field_hdf5(filepath, name)
-```
+<h2 id="petibmpy.field.read_field_hdf5"><code>read_field_hdf5(filepath, name)</code></h2>
 
 Read a field from HDF5 file.
 
@@ -453,11 +211,7 @@ Returns
 field : numpy.ndarray
     The PetIBM field variable as a NumPy array of floats.
 
-## `write_field_hdf5()`
-
-```python
-def write_field_hdf5(filepath, name, field)
-```
+<h2 id="petibmpy.field.write_field_hdf5"><code>write_field_hdf5(filepath, name, field)</code></h2>
 
 Write a field to a HDF5 file.
 
@@ -470,11 +224,7 @@ name : string
 field : numpy.ndarray
     The PetIBM field variable as a NumPy array of floats.
 
-## `linear_interpolation()`
-
-```python
-def linear_interpolation(u, x, xi)
-```
+<h2 id="petibmpy.field.linear_interpolation"><code>linear_interpolation(u, x, xi)</code></h2>
 
 Perform a linear interpolation along the first axis.
 
@@ -492,11 +242,7 @@ Returns
 ui : numpy.ndarray or float
     Interpolated values.
 
-## `interpolate3d()`
-
-```python
-def interpolate3d(field, grid1, grid2, kwargs)
-```
+<h2 id="petibmpy.field.interpolate3d"><code>interpolate3d(field, grid1, grid2, kwargs)</code></h2>
 
 Interpolate a 3D field from one grid to another.
 
@@ -518,11 +264,7 @@ Returns
 field2 : numpy.ndarray
     The interpolated 3D field.
 
-## `interpolate2d()`
-
-```python
-def interpolate2d(field, grid1, grid2, kwargs)
-```
+<h2 id="petibmpy.field.interpolate2d"><code>interpolate2d(field, grid1, grid2, kwargs)</code></h2>
 
 Interpolate a 2D field from one grid to another.
 
@@ -544,15 +286,11 @@ Returns
 field2 : numpy.ndarray
     The interpolated 2D field.
 
-# `petibmpy.extrude`
+<h1 id="petibmpy.extrude"><code>petibmpy.extrude</code></h1>
 
 Module with function to extrude a 2D geometry in the third direction.
 
-## `extrude2d()`
-
-```python
-def extrude2d(x, y, limits=[-0.5, 0.5], n=None, ds=None, force=False)
-```
+<h2 id="petibmpy.extrude.extrude2d"><code>extrude2d(x, y, limits=[-0.5, 0.5], n=None, ds=None, force=False)</code></h2>
 
 Extrude the two-dimensional section along the third direction (z).
 
@@ -584,15 +322,11 @@ y : numpy.ndarray
 z : numpy.ndarray
     z-coordinates of the geometry.
 
-# `petibmpy.rotate`
+<h1 id="petibmpy.rotate"><code>petibmpy.rotate</code></h1>
 
 Module with function to rotate a geometry.
 
-## `rotate2d()`
-
-```python
-def rotate2d(x, y, center=(0.0, 0.0), angle=0.0, mode='deg')
-```
+<h2 id="petibmpy.rotate.rotate2d"><code>rotate2d(x, y, center=(0.0, 0.0), angle=0.0, mode='deg')</code></h2>
 
 Rotate (x, y) coordinates around a center.
 
@@ -617,11 +351,7 @@ x_new : numpy.ndarray of floats
 y_new : numpy.ndarray of floats
     The rotated y-coordinates.
 
-## `rotate3d()`
-
-```python
-def rotate3d(x, y, z, roll=0.0, yaw=0.0, pitch=0.0, center=(0.0, 0.0, 0.0))
-```
+<h2 id="petibmpy.rotate.rotate3d"><code>rotate3d(x, y, z, roll=0.0, yaw=0.0, pitch=0.0, center=(0.0, 0.0, 0.0))</code></h2>
 
 Rotate 3D point.
 
@@ -652,23 +382,14 @@ yr : float
 zr : float
     z-coordinate of rotated point.
 
-## `rotate3d_vec`
-
-```python
-rotate3d_vec = numpy.vectorize(rotate3d,
-                               excluded=['roll', 'yaw', 'pitch', 'center'] ...
-```
+<h2 id="petibmpy.rotate.rotate3d_vec"><code>rotate3d_vec</code></h2>
 
 
-# `petibmpy.qcriterion`
+<h1 id="petibmpy.qcriterion"><code>petibmpy.qcriterion</code></h1>
 
 Module with functions to compute the Q-criterion
 
-## `qcriterion()`
-
-```python
-def qcriterion(velocity, grid)
-```
+<h2 id="petibmpy.qcriterion.qcriterion"><code>qcriterion(velocity, grid)</code></h2>
 
 Compute the Q-criterion on a 3D grid.
 
@@ -684,15 +405,11 @@ Returns
 qcrit : numpy.ndarray
     Value of the Q-criterion on the 3D grid.
 
-# `petibmpy.regularize`
+<h1 id="petibmpy.regularize"><code>petibmpy.regularize</code></h1>
 
 Module with function to regularize a 2D curve (with uniform resolution).
 
-## `get_perimeter()`
-
-```python
-def get_perimeter(x, y)
-```
+<h2 id="petibmpy.regularize.get_perimeter"><code>get_perimeter(x, y)</code></h2>
 
 Return the perimeter of the geometry.
 
@@ -708,11 +425,7 @@ Returns
 perimeter : float
     The perimeter.
 
-## `regularize2d()`
-
-```python
-def regularize2d(xo, yo, N=None, ds=None, atol=1.0E-06)
-```
+<h2 id="petibmpy.regularize.regularize2d"><code>regularize2d(xo, yo, N=None, ds=None, atol=1.0E-06)</code></h2>
 
 Regularize the geometry.
 
@@ -739,49 +452,15 @@ x: numpy.ndarray of floats
 y: numpy.ndarray of floats
     The y-coordinates of the regularized boundary.
 
-# `petibmpy.grid`
+<h1 id="petibmpy.grid"><code>petibmpy.grid</code></h1>
 
 Module to create/read/write a PetIBM grid.
 
-## `CartesianGrid` Objects
-
-```python
-def __init__(self, config=None)
-```
+<h2 id="petibmpy.grid.CartesianGrid"><code>CartesianGrid</code> Objects</h2>
 
 Contain information about a structured Cartesian grid.
 
-### `CartesianGrid.__init__()`
-
-```python
-def __init__(self, config=None)
-```
-
-Initialize the grid.
-
-Parameters
-----------
-config : dictionary (optional)
-    Configuration of the grid to create; default: None.
-
-### `CartesianGrid.__repr__()`
-
-```python
-def __repr__(self, ndigits=6)
-```
-
-Representation of the grid.
-
-Parameters
-----------
-ndigits : integer (optional)
-    Number of digits to represent floats; default: 6.
-
-### `CartesianGrid.create()`
-
-```python
-def create(self, config)
-```
+<h3 id="petibmpy.grid.CartesianGrid.create"><code>CartesianGrid.create(self, config)</code></h3>
 
 Create the grid.
 
@@ -790,27 +469,15 @@ Parameters
 config : dictionary
     Configuration of the grid.
 
-### `CartesianGrid.get_number_cells()`
-
-```python
-def get_number_cells(self)
-```
+<h3 id="petibmpy.grid.CartesianGrid.get_number_cells"><code>CartesianGrid.get_number_cells(self)</code></h3>
 
 Return the number of cells in the grid.
 
-### `CartesianGrid.get_gridlines()`
-
-```python
-def get_gridlines(self)
-```
+<h3 id="petibmpy.grid.CartesianGrid.get_gridlines"><code>CartesianGrid.get_gridlines(self)</code></h3>
 
 Return the gridlines as a list of 1D NumPy arrays of floats.
 
-### `CartesianGrid.write_hdf5()`
-
-```python
-def write_hdf5(self, filepath)
-```
+<h3 id="petibmpy.grid.CartesianGrid.write_hdf5"><code>CartesianGrid.write_hdf5(self, filepath)</code></h3>
 
 Save the grid into HDF5 file.
 
@@ -819,11 +486,7 @@ Parameters
 filepath : pathlib.Path or string
     Path of the HDF5 file to write into.
 
-### `CartesianGrid.write_yaml()`
-
-```python
-def write_yaml(self, filepath, ndigits=6)
-```
+<h3 id="petibmpy.grid.CartesianGrid.write_yaml"><code>CartesianGrid.write_yaml(self, filepath, ndigits=6)</code></h3>
 
 Write the YAML configuration node for PetIBM.
 
@@ -834,45 +497,11 @@ filepath : pathlib.Path or string
 ndigits : integer (optional)
     Number of digits to represent floats; default: 6.
 
-## `GridLine` Objects
-
-```python
-def __init__(self, config=None)
-```
+<h2 id="petibmpy.grid.GridLine"><code>GridLine</code> Objects</h2>
 
 Contain information about a gridline of a structured Cartesian grid.
 
-### `GridLine.__init__()`
-
-```python
-def __init__(self, config=None)
-```
-
-Initialize the gridline.
-
-Parameters
-----------
-config : dictionary (optional)
-    Configuration of the gridline to create; default: None.
-
-### `GridLine.__repr__()`
-
-```python
-def __repr__(self, ndigits=6)
-```
-
-Representation of the gridline.
-
-Parameters
-----------
-ndigits : integer (optional)
-    Number of digits to represent floats; default: 6.
-
-### `GridLine.create()`
-
-```python
-def create(self, config)
-```
+<h3 id="petibmpy.grid.GridLine.create"><code>GridLine.create(self, config)</code></h3>
 
 Create the gridline.
 
@@ -881,27 +510,15 @@ Parameters
 config : dictionary
     Configuration of the gridline.
 
-### `GridLine.get_size()`
-
-```python
-def get_size(self)
-```
+<h3 id="petibmpy.grid.GridLine.get_size"><code>GridLine.get_size(self)</code></h3>
 
 Return the number of vertices in the gridline.
 
-### `GridLine.asarray()`
-
-```python
-def asarray(self)
-```
+<h3 id="petibmpy.grid.GridLine.asarray"><code>GridLine.asarray(self)</code></h3>
 
 Return the gridline as a 1D NumPy array of floats.
 
-### `GridLine.yaml_node()`
-
-```python
-def yaml_node(self, ndigits=6)
-```
+<h3 id="petibmpy.grid.GridLine.yaml_node"><code>GridLine.yaml_node(self, ndigits=6)</code></h3>
 
 Return the YAML configuration node for PetIBM.
 
@@ -915,45 +532,11 @@ Returns
 node : dictionary
     Configuration node for the gridline.
 
-## `Segment` Objects
-
-```python
-def __init__(self, config=None)
-```
+<h2 id="petibmpy.grid.Segment"><code>Segment</code> Objects</h2>
 
 Contain information about a segment of a gridline.
 
-### `Segment.__init__()`
-
-```python
-def __init__(self, config=None)
-```
-
-Initialize the segment.
-
-Parameters
-----------
-config : dictionary (optional)
-    Configuration of the segment to create; default: None.
-
-### `Segment.__repr__()`
-
-```python
-def __repr__(self, ndigits=6)
-```
-
-Representation of the segment.
-
-Parameters
-----------
-ndigits : integer (optional)
-    Number of digits to represent floats; default: 6.
-
-### `Segment.create()`
-
-```python
-def create(self, config)
-```
+<h3 id="petibmpy.grid.Segment.create"><code>Segment.create(self, config)</code></h3>
 
 Create the segment.
 
@@ -962,19 +545,11 @@ Parameters
 config : dictionary
     Configuration of the segment.
 
-### `Segment.asarray()`
-
-```python
-def asarray(self)
-```
+<h3 id="petibmpy.grid.Segment.asarray"><code>Segment.asarray(self)</code></h3>
 
 Return the segment as a 1D NumPy array of floats.
 
-### `Segment.yaml_node()`
-
-```python
-def yaml_node(self, ndigits=6)
-```
+<h3 id="petibmpy.grid.Segment.yaml_node"><code>Segment.yaml_node(self, ndigits=6)</code></h3>
 
 Return the YAML configuration node for PetIBM.
 
@@ -988,11 +563,7 @@ Returns
 node : dictionary
     Configuration node for the segment.
 
-## `read_grid_hdf5()`
-
-```python
-def read_grid_hdf5(filepath, name)
-```
+<h2 id="petibmpy.grid.read_grid_hdf5"><code>read_grid_hdf5(filepath, name)</code></h2>
 
 Read a grid from HDF5 file.
 
@@ -1012,11 +583,7 @@ y : numpy.ndarray
 z : numpy.ndarray
     The z-coordinates along a gridline in the z-direction.
 
-## `write_grid_hdf5()`
-
-```python
-def write_grid_hdf5(filepath, name, grid)
-```
+<h2 id="petibmpy.grid.write_grid_hdf5"><code>write_grid_hdf5(filepath, name, grid)</code></h2>
 
 Write a grid to a HDF5 file.
 
@@ -1029,15 +596,11 @@ name : string
 grid : tuple of numpy.ndarray objects
     The gridline coordinates as 1D arrays of floats.
 
-# `petibmpy.bod`
+<h1 id="petibmpy.bod"><code>petibmpy.bod</code></h1>
 
 Module with I/O functions for immersed body.
 
-## `write_body()`
-
-```python
-def write_body(filepath, coords)
-```
+<h2 id="petibmpy.bod.write_body"><code>write_body(filepath, coords)</code></h2>
 
 Save the boundary coordinates to a file.
 
@@ -1048,11 +611,7 @@ filepath : pathlib.Path object or string
 coords : tuple of lists or numpy.ndarray objects
     The x, y, and z coordinates of the boundary.
 
-## `read_body()`
-
-```python
-def read_body(filepath, kwargs)
-```
+<h2 id="petibmpy.bod.read_body"><code>read_body(filepath, kwargs)</code></h2>
 
 Read the boundary coordinates from a file.
 
@@ -1068,15 +627,11 @@ Returns
 coords : numpy.ndarray
     The boundary coordinates.
 
-# `petibmpy.createxdmf`
+<h1 id="petibmpy.createxdmf"><code>petibmpy.createxdmf</code></h1>
 
 Module to create a XDMF file for a PetIBM field variable.
 
-## `write_xdmf()`
-
-```python
-def write_xdmf(outpath, datadir, gridpath, name, nstart=None, nt=None, nsave=None, states=None, times=None)
-```
+<h2 id="petibmpy.createxdmf.write_xdmf"><code>write_xdmf(outpath, datadir, gridpath, name, nstart=None, nt=None, nsave=None, states=None, times=None)</code></h2>
 
 Write a XDMF file to read the solution of a PetIBM variable.
 
@@ -1102,11 +657,7 @@ states : list of integers (optional)
 times : list of floats (optional)
     The list of time values; default: None.
 
-## `write_xdmf_multi()`
-
-```python
-def write_xdmf_multi(outpath, config, nstart=None, nt=None, nsave=None, states=None, times=None)
-```
+<h2 id="petibmpy.createxdmf.write_xdmf_multi"><code>write_xdmf_multi(outpath, config, nstart=None, nt=None, nsave=None, states=None, times=None)</code></h2>
 
 Write a XDMF file to read the solution of multiple PetIBM variables.
 
