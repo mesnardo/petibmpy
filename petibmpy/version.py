@@ -21,10 +21,11 @@ CLASSIFIERS = ['Development Status :: 1 - Alpha',
                'License :: OSI Approved :: BSD 3-Clause License',
                'Operating System :: Unix',
                'Programming Language :: Python']
-
-description = 'PetibmPy: Python processing tools for PetIBM'
-# Long description will go up on the pypi page
-long_description = """
+NAME = 'PetibmPy'
+MAINTAINER = 'Olivier Mesnard'
+MAINTAINER_EMAIL = 'mesnardo@gwu.edu'
+DESCRIPTION = 'PetibmPy: Python processing tools for PetIBM'
+LONG_DESCRIPTION = """
 PetibmPy
 ========
 Python processing tools for PetIBM.
@@ -37,12 +38,6 @@ terms & conditions for usage, and a DISCLAIMER OF ALL WARRANTIES.
 All trademarks referenced herein are property of their respective holders.
 Copyright (c) 2019, Olivier Mesnard.
 """
-
-NAME = 'PetibmPy'
-MAINTAINER = 'Olivier Mesnard'
-MAINTAINER_EMAIL = 'mesnardo@gwu.edu'
-DESCRIPTION = description
-LONG_DESCRIPTION = long_description
 URL = 'https://github.com/mesnardo/petibmpy'
 DOWNLOAD_URL = ''
 LICENSE = 'BSD 3-Clause'
