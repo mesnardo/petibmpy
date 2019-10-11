@@ -71,5 +71,7 @@ def get_time_averaged_values(t, *forces, limits=(-numpy.infty, numpy.infty)):
 
     """
     mask = (t >= limits[0]) & (t <= limits[1])
+    if not any(mask):
+        raise RuntimeError('Mask is empty! Choose another time interval.')
     means = (numpy.mean(f[mask]) for f in forces)
     return means
