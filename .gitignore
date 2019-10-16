@@ -6,3 +6,6 @@ build
 dist
 
 _site
+
+.coverage
+htmlcov

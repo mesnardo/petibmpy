@@ -22,13 +22,14 @@ before_install:
 install:
   - conda env create --name=py36 --file=environment.yaml
   - conda activate py36
+  - pip install coveralls pytest pytest-cov
   - pip install doctr
   - pip install mkdocs python-markdown-math
   - pip install git+https://github.com/NiklasRosenstein/pydoc-markdown.git@develop
   - python setup.py install
 
 script:
-  - python tests/all.py
+  - py.test --cov=petibmpy
   - pydoc-markdown
   - mkdocs build --clean --verbose
   - if [[ "${TRAVIS_BRANCH}" == "master" ]]; then

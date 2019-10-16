@@ -88,7 +88,3 @@ class ForcesTestCase(unittest.TestCase):
         time_limits = (5.5, 5.5)  # 5.5 is not a saved time value
         with self.assertRaises(RuntimeError):
             fx1, = petibmpy.get_time_averaged_values(t, fx, limits=time_limits)
-
-
-if __name__ == '__main__':
-    unittest.main()

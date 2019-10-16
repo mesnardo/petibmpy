@@ -31,7 +31,3 @@ class RotateTestCase(unittest.TestCase):
         self.assertTrue(numpy.allclose(y, self.y))
         with self.assertRaises(ValueError):
             petibmpy.rotate2d(x, y, mode='typo')
-
-
-if __name__ == '__main__':
-    unittest.main()
