@@ -37,6 +37,9 @@ script:
       doctr deploy --no-require-master --built-docs=_site "docs-$TRAVIS_BRANCH";
     fi
 
+after_success:
+  - coveralls
+
 notifications:
   email: false
 
