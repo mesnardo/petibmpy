@@ -4,7 +4,7 @@ import sys
 import unittest
 
 
-tests = ['test_rotate', 'test_forces', 'test_body']
+tests = ['test_rotate', 'test_forces', 'test_body', 'test_extrude']
 
 suite = unittest.TestSuite()
 
