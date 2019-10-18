@@ -1,10 +1,11 @@
 """Run the test suite."""
 
+import pathlib
 import sys
 import unittest
 
-
-tests = ['test_rotate', 'test_forces', 'test_body', 'test_extrude']
+tests_dir = pathlib.Path(__file__).absolute().parent
+tests = [f.stem for f in tests_dir.glob('test_*.py') if f.is_file()]
 
 suite = unittest.TestSuite()
 
