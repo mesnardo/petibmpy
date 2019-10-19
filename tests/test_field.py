@@ -47,7 +47,7 @@ class FieldTestCase(unittest.TestCase):
         xi = random.random()
         v1 = petibmpy.linear_interpolation(values, x, xi)
         f = interpolate.interp1d(x, values)
-        self.assertEqual(v1, f([xi])[0])
+        self.assertAlmostEqual(v1, f([xi])[0], places=12)
 
     def test_interpolate2d(self):
         """Test the function to interpolate a 2D field onto a grid."""
