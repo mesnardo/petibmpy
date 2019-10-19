@@ -4,7 +4,7 @@ import math
 import numpy
 
 
-def get_perimeter(x, y):
+def _get_perimeter(x, y):
     """Return the perimeter of the geometry.
 
     Parameters
@@ -55,10 +55,10 @@ def regularize2d(xo, yo, N=None, ds=None, atol=1.0E-06):
 
     """
     if not (N or ds):
-        return
+        return xo.copy(), yo.copy()
     if not N:
-        N = int(math.ceil(get_perimeter(xo, yo) / ds))
-    ds = get_perimeter(xo, yo) / N
+        N = int(math.ceil(_get_perimeter(xo, yo) / ds))
+    ds = _get_perimeter(xo, yo) / N
     # Duplicate point if necessary to get a closed surface.
     if abs(xo[0] - xo[-1]) > atol or abs(yo[0] - yo[-1]) > atol:
         xo, yo = numpy.append(xo, xo[0]), numpy.append(yo, yo[0])
@@ -66,7 +66,7 @@ def regularize2d(xo, yo, N=None, ds=None, atol=1.0E-06):
     next_idx = 1
     last_idx = xo.size - 1
     x, y = [xo[0]], [yo[0]]
-    for i in range(1, N):
+    for _ in range(1, N):
         xs, ys = x[-1], y[-1]  # Start point
         xe, ye = xo[next_idx], yo[next_idx]  # End point
         length = numpy.sqrt((xe - xs)**2 + (ye - ys)**2)

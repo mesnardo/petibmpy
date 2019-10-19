@@ -4,7 +4,7 @@ import math
 import numpy
 
 
-def extrude2d(x, y, limits=[-0.5, 0.5], n=None, ds=None, force=False):
+def extrude2d(x, y, limits, n=None, ds=None, force=False):
     """Extrude the two-dimensional section along the third direction (z).
 
     Parameters
@@ -13,9 +13,8 @@ def extrude2d(x, y, limits=[-0.5, 0.5], n=None, ds=None, force=False):
         x-coordinates of the section.
     y : numpy.ndarray
         y-coordinates of the section.
-    limits : 2-list of floats, optional
-        Limits of the extrusion;
-        default: [-0.5, 0.5].
+    limits : 2-list of floats
+        Limits of the extrusion.
     n : integer, optional
         Number of divisions in the z-direction;
         default: None.

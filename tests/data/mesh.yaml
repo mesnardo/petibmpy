@@ -1,0 +1,32 @@
+# 176x201x40 (1415040)
+mesh:
+- direction: x
+  start: -10.0
+  subDomains:
+  - cells: 59
+    end: -2.0
+    stretchRatio: 0.990099009901
+  - cells: 40
+    end: 2.0
+    stretchRatio: 1.0
+  - cells: 77
+    end: 20.0
+    stretchRatio: 1.02
+- direction: y
+  start: -15.0
+  subDomains:
+  - cells: 84
+    end: -2.0
+    stretchRatio: 0.990099009901
+  - cells: 40
+    end: 2.0
+    stretchRatio: 1.0
+  - cells: 77
+    end: 20.0
+    stretchRatio: 1.02
+- direction: z
+  start: -2.0
+  subDomains:
+  - cells: 40
+    end: 2.0
+    stretchRatio: 1.0
