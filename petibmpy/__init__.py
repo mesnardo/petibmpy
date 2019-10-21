@@ -4,6 +4,7 @@ from .extrude import *
 from .field import *
 from .forces import *
 from .grid import *
+from .logview import *
 from .misc import *
 from .probes import *
 from .qcriterion import *
