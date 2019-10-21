@@ -3,9 +3,9 @@ channels:
   - defaults
 dependencies:
   - h5py=2.9.0
-  - lxml=4.3.1
-  - matplotlib=3.0.2
-  - numpy=1.16.2
+  - lxml=4.3.3
+  - matplotlib=3.0.3
+  - numpy=1.16.3
   - python=3.6.8
-  - pyyaml=3.13
+  - pyyaml=5.1
   - scipy=1.2.1
