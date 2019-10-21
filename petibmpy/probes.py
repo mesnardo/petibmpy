@@ -88,7 +88,7 @@ class _ProbeBase(object):
         node['type'] = self._type
         node['field'] = self.field
         node['viewer'] = self.viewer
-        node['relative_path'] = self.path
+        node['path'] = self.path
         for attr in ['n_sum', 'n_monitor', 't_start', 't_end']:
             if getattr(self, attr) is not None:
                 node[attr] = getattr(self, attr)
