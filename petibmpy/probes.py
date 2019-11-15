@@ -217,7 +217,7 @@ class ProbeVolume(_ProbeBase):
         if dim == 3:
             mesh = mesh + (mesh_group['z'][:],)
         mesh_sizes = [line.size for line in mesh]
-        field_group = f[self.name]
+        field_group = f[self.field]
         time_str = f'{time:0.{ndigits}f}'
         values = field_group[time_str][:]
         values = values.reshape(mesh_sizes[::-1])
