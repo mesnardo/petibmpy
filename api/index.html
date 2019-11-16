@@ -234,6 +234,11 @@
 <li><a href="#petibmpy.field.interpolate2d">interpolate2d</a></li>
 </ul>
 </li>
+<li><a href="#petibmpy.logview">petibmpy.logview</a><ul>
+<li><a href="#petibmpy.logview.PETScLogView">PETScLogView</a></li>
+<li><a href="#petibmpy.logview.plot_events_breakdown">plot_events_breakdown</a></li>
+</ul>
+</li>
 <li><a href="#petibmpy.regularize">petibmpy.regularize</a><ul>
 <li><a href="#petibmpy.regularize.regularize2d">regularize2d</a></li>
 </ul>
@@ -403,6 +408,18 @@ grid2 : tuple of numpy.ndarray objects
 <h2 id="returns_5">Returns</h2>
 <p>field2 : numpy.ndarray
     The interpolated 2D field.</p>
+<h1 id="petibmpy.logview"><code>petibmpy.logview</code></h1>
+
+<p>Module to parse a PETSc log view file.</p>
+<h2 id="petibmpy.logview.PETScLogView"><code>PETScLogView</code> Objects</h2>
+
+<p>Parse a PETSc log view file.</p>
+<h3 id="petibmpy.logview.PETScLogView.parse_log_view"><code>PETScLogView.parse_log_view(self, filepath)</code></h3>
+
+<p>Parse a PETSc log view file.</p>
+<h2 id="petibmpy.logview.plot_events_breakdown"><code>plot_events_breakdown(ax, runs, ylabel='wall-time (s)', event_names=None, bar_width=0.5)</code></h2>
+
+<p>Add a bar chart of the breakdown of events to an axis.</p>
 <h1 id="petibmpy.regularize"><code>petibmpy.regularize</code></h1>
 
 <p>Module with function to regularize a 2D curve (with uniform resolution).</p>
