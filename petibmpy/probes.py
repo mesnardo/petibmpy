@@ -179,15 +179,16 @@ class ProbeVolume(_ProbeBase):
             Estimated limits of the box, by default None
 
         """
+        tol = 1e-12
         if box is None:
             box = self.box
         self.box = []
         for x, v in zip(grid, box):
             x_l, x_r = v
-            idx_l = numpy.where(x < x_l)[0][-1]
-            idx_r = numpy.where(x > x_r)[0][0]
-            x_l = 0.5 * (x[idx_l] + x[idx_l + 1])
-            x_r = 0.5 * (x[idx_r - 1] + x[idx_r])
+            idx_l = numpy.where(x < x_l - tol)[0][-1]
+            idx_r = numpy.where(x > x_r + tol)[0][0]
+            x_l = 0.5 * (x[idx_l - 1] + x[idx_l])
+            x_r = 0.5 * (x[idx_r] + x[idx_r + 1])
             self.box.append([x_l, x_r])
 
     def read_hdf5(self, filepath, time, ndigits=6):
