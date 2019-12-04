@@ -111,7 +111,8 @@ def visit_render_save_states(states, out_dir=os.getcwd(), out_prefix=None,
         SaveWindowAtts = visit.SaveWindowAttributes()
         SaveWindowAtts.outputToCurrentDirectory = 0
         SaveWindowAtts.outputDirectory = str(out_dir)
-        timestep = int(visit.Query('Time').split(' ')[-1][:-1])
+        time = float(visit.Query('Time').split(' ')[-1][:-1])
+        timestep = state
         SaveWindowAtts.fileName = '{}{:0>7}'.format(out_prefix, timestep)
         SaveWindowAtts.family = 0
         SaveWindowAtts.format = SaveWindowAtts.PNG
