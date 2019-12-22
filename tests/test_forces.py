@@ -88,3 +88,20 @@ class ForcesTestCase(unittest.TestCase):
         time_limits = (5.5, 5.5)  # 5.5 is not a saved time value
         with self.assertRaises(RuntimeError):
             fx1, = petibmpy.get_time_averaged_values(t, fx, limits=time_limits)
+
+    def test_get_rms_values(self):
+        """Test function `get_rms_values`."""
+        a = 2.1
+        t = numpy.linspace(0.0, 2 * numpy.pi, num=101)[:-1]
+        y1 = numpy.full_like(t, a)
+        y2 = a * numpy.sin(t)
+        rms1, = petibmpy.get_rms_values(t, y1)
+        self.assertAlmostEqual(rms1, a)
+        rms1, rms2 = petibmpy.get_rms_values(t, y1, y2)
+        self.assertAlmostEqual(rms1, a)
+        self.assertAlmostEqual(rms2, a / numpy.sqrt(2))
+        rms1, = petibmpy.get_rms_values(t, y1, limits=(0.0, t[t.size // 2]))
+        self.assertAlmostEqual(rms1, a)
+        limits = (10.0, 10.0)  # 5.5 is not a saved time value
+        with self.assertRaises(RuntimeError):
+            rms1, = petibmpy.get_rms_values(t, y1, limits=limits)

@@ -75,3 +75,28 @@ def get_time_averaged_values(t, *forces, limits=(-numpy.infty, numpy.infty)):
         raise RuntimeError('Mask is empty! Choose another time interval.')
     means = (numpy.mean(f[mask]) for f in forces)
     return means
+
+
+def get_rms_values(t, *forces, limits=(-numpy.infty, numpy.infty)):
+    """Compute the root-mean-square of the signals.
+
+    Parameters
+    ----------
+    t : numpy.ndarray object
+        The time values.
+    forces : tuple of numpy.ndarray objects
+        The forces (or force coefficients).
+    limits : tuple of 2 floats (optional)
+        Time limits used to compute the RMS; default: (-inf, +inf).
+
+    Returns
+    -------
+    rms : tuple of floats
+        The RMS values.
+
+    """
+    mask = (t >= limits[0]) & (t <= limits[1])
+    if not any(mask):
+        raise RuntimeError('Mask is empty! Choose another time interval.')
+    rms = (numpy.sqrt(numpy.mean(f[mask]**2)) for f in forces)
+    return rms
