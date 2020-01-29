@@ -3,6 +3,7 @@
 import functools
 import h5py
 import math
+from matplotlib import pyplot
 import numpy
 import operator
 import yaml
@@ -20,6 +21,7 @@ class CartesianGrid():
             Configuration of the grid to create; default: None.
 
         """
+        self.dim = 0  # number of dimensions
         self.gridlines = {'x': GridLine(), 'y': GridLine(), 'z': GridLine()}
         self.n = 0  # number of cells
         if config is not None:
@@ -52,6 +54,7 @@ class CartesianGrid():
             direction = node['direction']
             assert direction in self.gridlines.keys()
             gridlines[direction] = GridLine(config=node)
+            self.dim += 1
         self.gridlines = gridlines
         self.n = self.get_number_cells()
 
@@ -101,6 +104,82 @@ class CartesianGrid():
                           ' ({})\n'.format(self.n))
             outfile.write(yaml.dump({'mesh': nodes}, default_flow_style=False))
 
+    def plot_gridlines_2d(self, figsize=(6.0, 6.0), color='black',
+                          xrange=(0, None, 1), yrange=(0, None, 1),
+                          xlim=(-numpy.infty, numpy.infty),
+                          ylim=(-numpy.infty, numpy.infty)):
+        """Create a Matplotlib figure with gridlines.
+
+        Parameters
+        ----------
+        figsize : (float, float), optional
+            Width and height of the figure in inches; default is (6, 6).
+        color : str, optional
+            Color of the gridlines; default is black.
+        xrange : (int, int, int), optional
+            Index range (min, max, stride) to consider for x gridlines;
+            default is to consider all stations (0, None, 1).
+        yrange : (int, int, int), optional
+            Index range (min, max, stride) to consider for y gridlines;
+            default is to consider all stations (0, None, 1).
+        xlim : (float, float), optional
+            Limits of the domain in the x direction to plot;
+            default is to plot the entire domain.
+        ylim : (float, float), optional
+            Limits of the domain in the y direction to plot;
+            default is to plot the entire domain.
+
+        Returns
+        -------
+        matplotlib.figure.Figure
+            Matplotlib Figure.
+        matplotlib.axes.Axes
+            Matplotlib Axes object.
+
+        """
+        assert self.dim == 2
+        fig, ax = pyplot.subplots(figsize=figsize)
+        gridlines = self.get_gridlines()
+        x = gridlines[0][xrange[0]:xrange[1]:xrange[2]]
+        y = gridlines[1][yrange[0]:yrange[1]:yrange[2]]
+        mask, = numpy.where((x >= xlim[0]) & (x <= xlim[1]))
+        x = x[mask]
+        mask, = numpy.where((y >= ylim[0]) & (y <= ylim[1]))
+        y = y[mask]
+        ax.vlines(x, ymin=y[0], ymax=y[-1], color=color)
+        ax.hlines(y, xmin=x[0], xmax=x[-1], color=color)
+        ax.axis('scaled', adjustable='box')
+        ax.set_xlim(x[0], x[-1])
+        ax.set_ylim(y[0], y[-1])
+        return fig, ax
+
+    def print_info(self):
+        """Print some information about the cell widths.
+
+        The method prints the minimum and maximum cell widths
+        along each direction, as well as max/min ratio across
+        directions.
+
+        """
+        gridlines = self.get_gridlines()
+        x, y = gridlines[0], gridlines[1]
+        dx, dy = x[1:] - x[:-1], y[1:] - y[:-1]
+        dx_min, dx_max = numpy.min(dx), numpy.max(dx)
+        dy_min, dy_max = numpy.min(dy), numpy.max(dy)
+        print(f'dx: min={dx_min}, max={dx_max}')
+        print(f'dy: min={dy_min}, max={dy_max}')
+        print(f'dx_max / dy_min = {dx_max / dy_min}')
+        print(f'dy_max / dx_min = {dy_max / dx_min}')
+        if self.dim == 3:
+            z = gridlines[2]
+            dz = z[1:] - z[:-1]
+            dz_min, dz_max = numpy.min(dz), numpy.max(dz)
+            print(f'dz: min={dz_min}, max={dz_max}')
+            print(f'dx_max / dz_min = {dx_max / dz_min}')
+            print(f'dz_max / dx_min = {dz_max / dx_min}')
+            print(f'dy_max / dz_min = {dy_max / dz_min}')
+            print(f'dz_max / dy_min = {dz_max / dy_min}')
+
 
 class GridLine():
     """Contain information about a gridline of a structured Cartesian grid."""
@@ -147,7 +226,12 @@ class GridLine():
         start = config['start']
         for node in config['subDomains']:
             node['start'] = start
-            self.segments.append(Segment(config=node))
+            if 'max_width' in node.keys():
+                node1, node2 = self._split_uniform_and_stretch(node)
+                self.segments.append(Segment(config=node1))
+                self.segments.append(Segment(config=node2))
+            else:
+                self.segments.append(Segment(config=node))
             start = node['end']
         self.size = self.get_size()
 
@@ -181,6 +265,57 @@ class GridLine():
                 'subDomains': [s.yaml_node(ndigits=ndigits)
                                for s in self.segments]}
         return node
+
+    def _split_uniform_and_stretch(self, config):
+        """Split configuration of a stretched portion.
+
+        The configuration is split into a stretch portion and a uniform portion
+        with a cell width equal to the maximum cell width provided.
+
+        Parameters
+        ----------
+        config : dict
+            Configuration of the segment to split.
+
+        Returns
+        -------
+        dict, dict
+            Configurations for the stretched and uniform sub-segments.
+
+        """
+        start, end = config['start'], config['end']  # segment limits
+        length = abs(end - start)  # segment length
+        ratio = config['stretchRatio']  # stretching ratio
+        first_width = config['width']  # first width of stretched portion
+        max_width = config['max_width']  # largest width of stretched portion
+
+        # Find estimation of the position of the junction
+        # between the uniform and stretched portion.
+        n = 0
+        st, width = 0.0, first_width
+        while width < max_width:
+            width = first_width * ratio**n
+            ed = st + width
+            st = ed
+            n += 1
+
+        # Compute number of cells in uniform portion.
+        n = math.ceil(abs(length - ed) / max_width)
+
+        # Create the configuration for the uniform and stretched portions.
+        reverse = config.get('reverse', False)
+        if reverse:
+            junction = start + n * max_width
+            config1 = dict(start=start, end=junction, width=max_width)
+            config2 = dict(start=junction, end=end, width=first_width,
+                           stretchRatio=ratio, reverse=True)
+        else:
+            junction = end - n * max_width
+            config1 = dict(start=start, end=junction, width=first_width,
+                           stretchRatio=ratio)
+            config2 = dict(start=junction, end=end, width=max_width)
+
+        return config1, config2
 
 
 class Segment():
@@ -235,7 +370,7 @@ class Segment():
         if abs(r - 1) < 1e-6:
             n_float = length / width
             n = int(round(n_float))
-            assert abs(n - n_float) < 1e-6, "Length should be multple of width"
+            assert abs(n - n_float) < 1e-6, "Length should be multiple of width"
             self.vertices = numpy.linspace(start, end, num=n + 1)
             self.r = 1.0
         else:
