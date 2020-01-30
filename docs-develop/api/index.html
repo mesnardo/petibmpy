@@ -132,15 +132,15 @@
         
             <li><a class="toctree-l3" href="#parameters_17">Parameters</a></li>
         
-            <li><a class="toctree-l3" href="#parameters_18">Parameters</a></li>
-        
             <li><a class="toctree-l3" href="#returns_12">Returns</a></li>
+        
+            <li><a class="toctree-l3" href="#parameters_18">Parameters</a></li>
         
             <li><a class="toctree-l3" href="#parameters_19">Parameters</a></li>
         
-            <li><a class="toctree-l3" href="#parameters_20">Parameters</a></li>
-        
             <li><a class="toctree-l3" href="#returns_13">Returns</a></li>
+        
+            <li><a class="toctree-l3" href="#parameters_20">Parameters</a></li>
         
             <li><a class="toctree-l3" href="#parameters_21">Parameters</a></li>
         
@@ -148,29 +148,29 @@
         
             <li><a class="toctree-l3" href="#parameters_22">Parameters</a></li>
         
-            <li><a class="toctree-l3" href="#parameters_23">Parameters</a></li>
-        
             <li><a class="toctree-l3" href="#returns_15">Returns</a></li>
+        
+            <li><a class="toctree-l3" href="#parameters_23">Parameters</a></li>
         
             <li><a class="toctree-l3" href="#parameters_24">Parameters</a></li>
         
-            <li><a class="toctree-l3" href="#parameters_25">Parameters</a></li>
-        
             <li><a class="toctree-l3" href="#returns_16">Returns</a></li>
+        
+            <li><a class="toctree-l3" href="#parameters_25">Parameters</a></li>
         
             <li><a class="toctree-l3" href="#parameters_26">Parameters</a></li>
         
-            <li><a class="toctree-l3" href="#parameters_27">Parameters</a></li>
-        
             <li><a class="toctree-l3" href="#returns_17">Returns</a></li>
         
-            <li><a class="toctree-l3" href="#raises">Raises</a></li>
+            <li><a class="toctree-l3" href="#parameters_27">Parameters</a></li>
         
             <li><a class="toctree-l3" href="#parameters_28">Parameters</a></li>
         
-            <li><a class="toctree-l3" href="#parameters_29">Parameters</a></li>
-        
             <li><a class="toctree-l3" href="#returns_18">Returns</a></li>
+        
+            <li><a class="toctree-l3" href="#raises">Raises</a></li>
+        
+            <li><a class="toctree-l3" href="#parameters_29">Parameters</a></li>
         
             <li><a class="toctree-l3" href="#parameters_30">Parameters</a></li>
         
@@ -178,7 +178,11 @@
         
             <li><a class="toctree-l3" href="#parameters_31">Parameters</a></li>
         
+            <li><a class="toctree-l3" href="#returns_20">Returns</a></li>
+        
             <li><a class="toctree-l3" href="#parameters_32">Parameters</a></li>
+        
+            <li><a class="toctree-l3" href="#parameters_33">Parameters</a></li>
         
         </ul>
     
@@ -539,7 +543,9 @@ limits : tuple of 2 floats (optional)
     Path of the YAML file to write into.
 ndigits : integer (optional)
     Number of digits to represent floats; default: 6.</p>
-<h3 id="petibmpy.grid.CartesianGrid.plot_gridlines_2d"><code>CartesianGrid.plot_gridlines_2d(self, figsize=(6.0, 6.0), color='black', xrange=(0, None, 1), yrange=(0, None, 1), xlim=(-numpy.infty, numpy.infty), ylim=(-numpy.infty, numpy.infty))</code></h3>
+<h3 id="petibmpy.grid.CartesianGrid.plot_gridlines"><code>CartesianGrid.plot_gridlines(self, kwargs)</code></h3>
+
+<h3 id="petibmpy.grid.CartesianGrid.plot_gridlines_2d"><code>CartesianGrid.plot_gridlines_2d(self, figsize=(6.0, 6.0), color='black', xlabel='x', ylabel='y', xrange=(0, None, 1), yrange=(0, None, 1), xlim=(-numpy.infty, numpy.infty), ylim=(-numpy.infty, numpy.infty))</code></h3>
 
 <p>Create a Matplotlib figure with gridlines.</p>
 <h2 id="parameters_16">Parameters</h2>
@@ -547,6 +553,10 @@ ndigits : integer (optional)
     Width and height of the figure in inches; default is (6, 6).
 color : str, optional
     Color of the gridlines; default is black.
+xlabel : str, optional
+    Label along the x axis; default is 'x'.
+ylabel : str, optional
+    Label along the y axis; default is 'y'.
 xrange : (int, int, int), optional
     Index range (min, max, stride) to consider for x gridlines;
     default is to consider all stations (0, None, 1).
@@ -564,6 +574,43 @@ ylim : (float, float), optional
     Matplotlib Figure.
 matplotlib.axes.Axes
     Matplotlib Axes object.</p>
+<h3 id="petibmpy.grid.CartesianGrid.plot_gridlines_3d"><code>CartesianGrid.plot_gridlines_3d(self, figsize=(12.0, 6.0), color='black', xlabel='x', ylabel='y', zlabel='z', xrange=(0, None, 1), yrange=(0, None, 1), zrange=(0, None, 1), xlim=(-numpy.infty, numpy.infty), ylim=(-numpy.infty, numpy.infty), zlim=(-numpy.infty, numpy.infty))</code></h3>
+
+<p>Create a Matplotlib figure with gridlines.</p>
+<h2 id="parameters_17">Parameters</h2>
+<p>figsize : (float, float), optional
+    Width and height of the figure in inches; default is (12, 6).
+color : str, optional
+    Color of the gridlines; default is black.
+xlabel : str, optional
+    Label along the x axis; default is 'x'.
+ylabel : str, optional
+    Label along the y axis; default is 'y'.
+zlabel : str, optional
+    Label along the z axis; default is 'z'.
+xrange : (int, int, int), optional
+    Index range (min, max, stride) to consider for x gridlines;
+    default is to consider all stations (0, None, 1).
+yrange : (int, int, int), optional
+    Index range (min, max, stride) to consider for y gridlines;
+    default is to consider all stations (0, None, 1).
+zrange : (int, int, int), optional
+    Index range (min, max, stride) to consider for z gridlines;
+    default is to consider all stations (0, None, 1).
+xlim : (float, float), optional
+    Limits of the domain in the x direction to plot;
+    default is to plot the entire domain.
+ylim : (float, float), optional
+    Limits of the domain in the y direction to plot;
+    default is to plot the entire domain.
+zlim : (float, float), optional
+    Limits of the domain in the z direction to plot;
+    default is to plot the entire domain.</p>
+<h2 id="returns_12">Returns</h2>
+<p>matplotlib.figure.Figure
+    Matplotlib Figure.
+array of matplotlib.axes.Axes
+    Array of Matplotlib Axes objects.</p>
 <h3 id="petibmpy.grid.CartesianGrid.print_info"><code>CartesianGrid.print_info(self)</code></h3>
 
 <p>Print some information about the cell widths.</p>
@@ -576,22 +623,22 @@ directions.</p>
 <h3 id="petibmpy.grid.GridLine.create"><code>GridLine.create(self, config)</code></h3>
 
 <p>Create the gridline.</p>
-<h2 id="parameters_17">Parameters</h2>
+<h2 id="parameters_18">Parameters</h2>
 <p>config : dictionary
     Configuration of the gridline.</p>
 <h3 id="petibmpy.grid.GridLine.get_size"><code>GridLine.get_size(self)</code></h3>
 
 <p>Return the number of vertices in the gridline.</p>
-<h3 id="petibmpy.grid.GridLine.asarray"><code>GridLine.asarray(self)</code></h3>
+<h3 id="petibmpy.grid.GridLine.asarray"><code>GridLine.asarray(self, tol=1e-12)</code></h3>
 
 <p>Return the gridline as a 1D NumPy array of floats.</p>
 <h3 id="petibmpy.grid.GridLine.yaml_node"><code>GridLine.yaml_node(self, ndigits=6)</code></h3>
 
 <p>Return the YAML configuration node for PetIBM.</p>
-<h2 id="parameters_18">Parameters</h2>
+<h2 id="parameters_19">Parameters</h2>
 <p>ndigits : integer (optional)
     Number of digits to represent floats; default: 6.</p>
-<h2 id="returns_12">Returns</h2>
+<h2 id="returns_13">Returns</h2>
 <p>node : dictionary
     Configuration node for the gridline.</p>
 <h2 id="petibmpy.grid.Segment"><code>Segment</code> Objects</h2>
@@ -600,7 +647,7 @@ directions.</p>
 <h3 id="petibmpy.grid.Segment.create"><code>Segment.create(self, config)</code></h3>
 
 <p>Create the segment.</p>
-<h2 id="parameters_19">Parameters</h2>
+<h2 id="parameters_20">Parameters</h2>
 <p>config : dictionary
     Configuration of the segment.</p>
 <h3 id="petibmpy.grid.Segment.asarray"><code>Segment.asarray(self)</code></h3>
@@ -609,21 +656,21 @@ directions.</p>
 <h3 id="petibmpy.grid.Segment.yaml_node"><code>Segment.yaml_node(self, ndigits=6)</code></h3>
 
 <p>Return the YAML configuration node for PetIBM.</p>
-<h2 id="parameters_20">Parameters</h2>
+<h2 id="parameters_21">Parameters</h2>
 <p>ndigits : integer (optional)
     Number of digits to represent floats; default: 6.</p>
-<h2 id="returns_13">Returns</h2>
+<h2 id="returns_14">Returns</h2>
 <p>node : dictionary
     Configuration node for the segment.</p>
 <h2 id="petibmpy.grid.read_grid_hdf5"><code>read_grid_hdf5(filepath, name)</code></h2>
 
 <p>Read a grid from HDF5 file.</p>
-<h2 id="parameters_21">Parameters</h2>
+<h2 id="parameters_22">Parameters</h2>
 <p>filepath : string or pathlib.Path object
     Path of the HDF5 file.
 name : string
     Name of the grid.</p>
-<h2 id="returns_14">Returns</h2>
+<h2 id="returns_15">Returns</h2>
 <p>x : numpy.ndarray
     The x-coordinates along a gridline in the x-direction.
 y : numpy.ndarray
@@ -633,7 +680,7 @@ z : numpy.ndarray
 <h2 id="petibmpy.grid.write_grid_hdf5"><code>write_grid_hdf5(filepath, name, grid)</code></h2>
 
 <p>Write a grid to a HDF5 file.</p>
-<h2 id="parameters_22">Parameters</h2>
+<h2 id="parameters_23">Parameters</h2>
 <p>filepath : string or pathlib.Path object
     Path of the HDF5 file.
 name : string
@@ -646,12 +693,12 @@ grid : tuple of numpy.ndarray objects
 <h2 id="petibmpy.qcriterion.qcriterion"><code>qcriterion(velocity, grid)</code></h2>
 
 <p>Compute the Q-criterion on a 3D grid.</p>
-<h2 id="parameters_23">Parameters</h2>
+<h2 id="parameters_24">Parameters</h2>
 <p>velocity : tuple of numpy.ndarray objects
     The velocity vector field given as (u, v, w).
 grid : tuple of numpy.ndarray objects
     The structured Cartesian grid given as (x, y, z).</p>
-<h2 id="returns_15">Returns</h2>
+<h2 id="returns_16">Returns</h2>
 <p>qcrit : numpy.ndarray
     Value of the Q-criterion on the 3D grid.</p>
 <h1 id="petibmpy.probes"><code>petibmpy.probes</code></h1>
@@ -663,7 +710,7 @@ grid : tuple of numpy.ndarray objects
 <h3 id="petibmpy.probes.ProbeVolume.adjust_box"><code>ProbeVolume.adjust_box(self, grid, box=None)</code></h3>
 
 <p>Adjust the box so that limits lie between two grid points.</p>
-<h2 id="parameters_24">Parameters</h2>
+<h2 id="parameters_25">Parameters</h2>
 <p>grid : list or numpy.ndarray
     The grid of the field to minotor
 box : list or numpy.ndarray, optional
@@ -671,14 +718,14 @@ box : list or numpy.ndarray, optional
 <h3 id="petibmpy.probes.ProbeVolume.read_hdf5"><code>ProbeVolume.read_hdf5(self, filepath, time, ndigits=6)</code></h3>
 
 <p>Read the probe from a HDF5 file at a given time.</p>
-<h2 id="parameters_25">Parameters</h2>
+<h2 id="parameters_26">Parameters</h2>
 <p>filepath : pathlib.Path or str
     Path of file with the solution of the probe
 time : float
     Time value
 ndigits : int, optional
     Number of digits to round the time value, by default 6</p>
-<h2 id="returns_16">Returns</h2>
+<h2 id="returns_17">Returns</h2>
 <p>tuple
     The mesh grid of the probe
 numpy.ndarray
@@ -689,16 +736,16 @@ numpy.ndarray
 <h3 id="petibmpy.probes.ProbePoint.set_loc"><code>ProbePoint.set_loc(self, loc)</code></h3>
 
 <p>Set the coordinates of the point to monitor.</p>
-<h2 id="parameters_26">Parameters</h2>
+<h2 id="parameters_27">Parameters</h2>
 <p>loc : list or numpy.ndarray
     Coordinates of the point</p>
 <h2 id="petibmpy.probes.Probe"><code>Probe(ptype, args, *,, ,, kwargs)</code></h2>
 
 <p>Create a probe.</p>
-<h2 id="parameters_27">Parameters</h2>
+<h2 id="parameters_28">Parameters</h2>
 <p>ptype : str
     Type of the probe, choices are 'VOLUME' or 'POINT'</p>
-<h2 id="returns_17">Returns</h2>
+<h2 id="returns_18">Returns</h2>
 <p>ProbeVolume or ProbePoint
     The probe</p>
 <h2 id="raises">Raises</h2>
@@ -707,7 +754,7 @@ numpy.ndarray
 <h2 id="petibmpy.probes.probes_yaml_dump"><code>probes_yaml_dump(probes, filepath, mode='w')</code></h2>
 
 <p>Save the probes configuration in a YAML file.</p>
-<h2 id="parameters_28">Parameters</h2>
+<h2 id="parameters_29">Parameters</h2>
 <p>probes : list
     The list of probes
 filepath : pathlib.Path or str
@@ -720,7 +767,7 @@ mode : str, optional
 <h2 id="petibmpy.rotate.rotate2d"><code>rotate2d(x, y, center=(0.0, 0.0), angle=0.0, mode='deg')</code></h2>
 
 <p>Rotate (x, y) coordinates around a center.</p>
-<h2 id="parameters_29">Parameters</h2>
+<h2 id="parameters_30">Parameters</h2>
 <p>x : numpy.ndarray of floats
     The x-coordinates to rotate.
 y : numpy.ndarray of floats
@@ -732,7 +779,7 @@ angle : float, optional
 mode : string, optional
     Whether angle is provided in degrees or in radians;
     choices: 'deg', 'rad'; default: 'deg'.</p>
-<h2 id="returns_18">Returns</h2>
+<h2 id="returns_19">Returns</h2>
 <p>x_new : numpy.ndarray of floats
     The rotated x-coordinates.
 y_new : numpy.ndarray of floats
@@ -740,7 +787,7 @@ y_new : numpy.ndarray of floats
 <h2 id="petibmpy.rotate.rotate3d"><code>rotate3d(x, y, z, roll=0.0, yaw=0.0, pitch=0.0, center=(0.0, 0.0, 0.0))</code></h2>
 
 <p>Rotate 3D point.</p>
-<h2 id="parameters_30">Parameters</h2>
+<h2 id="parameters_31">Parameters</h2>
 <p>x : float
     x-coordinate of point.
 y : float
@@ -756,7 +803,7 @@ pitch : float (optional)
 center : tuple of floats
     Coordinates of the center of rotation;
     default: [0.0, 0.0, 0.0].</p>
-<h2 id="returns_19">Returns</h2>
+<h2 id="returns_20">Returns</h2>
 <p>xr : float
     x-coordinate of rotated point.
 yr : float
@@ -771,7 +818,7 @@ zr : float
 <h2 id="petibmpy.createxdmf.write_xdmf"><code>write_xdmf(outpath, datadir, gridpath, name, nstart=None, nt=None, nsave=None, states=None, times=None)</code></h2>
 
 <p>Write a XDMF file to read the solution of a PetIBM variable.</p>
-<h2 id="parameters_31">Parameters</h2>
+<h2 id="parameters_32">Parameters</h2>
 <p>outpath : pathlib.Path object
     Path of the XDMF file to create.
 datadir : pathlib.Path object
@@ -794,7 +841,7 @@ times : list of floats (optional)
 <h2 id="petibmpy.createxdmf.write_xdmf_multi"><code>write_xdmf_multi(outpath, config, nstart=None, nt=None, nsave=None, states=None, times=None)</code></h2>
 
 <p>Write a XDMF file to read the solution of multiple PetIBM variables.</p>
-<h2 id="parameters_32">Parameters</h2>
+<h2 id="parameters_33">Parameters</h2>
 <p>outpath : pathlib.Path object
     Path of the XDMF file to create.
 config : dictionary
