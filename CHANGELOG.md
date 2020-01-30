@@ -15,7 +15,7 @@
 * Function to interpolate a 2D field from one grid to another.
 * Module to create probes (volume and point) and to load data from files.
 * Mesh feature to split the configuration of a stretched segment into two sub-configurations: one for a stretched segment where the maximum grid spacing is enforced, followed by one for a uniform segment (with a grid spacing equal to the maximum spacing of the previous stretched segment).
-* `CartesianGrid` method to plot the gridlines of a 2D mesh in a Matplotlib figure.
+* `CartesianGrid` method to plot the gridlines of a mesh in a Matplotlib figure.
 * `CartesianGrid` method to print some information about the grid spacings of a mesh (min, max, ratio).
 
 ### Changed

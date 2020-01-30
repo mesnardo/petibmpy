@@ -104,7 +104,16 @@ class CartesianGrid():
                           ' ({})\n'.format(self.n))
             outfile.write(yaml.dump({'mesh': nodes}, default_flow_style=False))
 
+    def plot_gridlines(self, **kwargs):
+        if self.dim == 2:
+            return self.plot_gridlines_2d(**kwargs)
+        elif self.dim == 3:
+            return self.plot_gridlines_3d(**kwargs)
+        else:
+            raise ValueError(f'dim = {self.dim} not supported!')
+
     def plot_gridlines_2d(self, figsize=(6.0, 6.0), color='black',
+                          xlabel='x', ylabel='y',
                           xrange=(0, None, 1), yrange=(0, None, 1),
                           xlim=(-numpy.infty, numpy.infty),
                           ylim=(-numpy.infty, numpy.infty)):
@@ -116,6 +125,10 @@ class CartesianGrid():
             Width and height of the figure in inches; default is (6, 6).
         color : str, optional
             Color of the gridlines; default is black.
+        xlabel : str, optional
+            Label along the x axis; default is 'x'.
+        ylabel : str, optional
+            Label along the y axis; default is 'y'.
         xrange : (int, int, int), optional
             Index range (min, max, stride) to consider for x gridlines;
             default is to consider all stations (0, None, 1).
@@ -138,10 +151,89 @@ class CartesianGrid():
 
         """
         assert self.dim == 2
+        x, y = self.get_gridlines()
         fig, ax = pyplot.subplots(figsize=figsize)
-        gridlines = self.get_gridlines()
-        x = gridlines[0][xrange[0]:xrange[1]:xrange[2]]
-        y = gridlines[1][yrange[0]:yrange[1]:yrange[2]]
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        self._plot_gridlines_2d(ax, x, y, color=color,
+                                xrange=xrange, yrange=yrange,
+                                xlim=xlim, ylim=ylim)
+        return fig, ax
+
+    def plot_gridlines_3d(self, figsize=(12.0, 6.0), color='black',
+                          xlabel='x', ylabel='y', zlabel='z',
+                          xrange=(0, None, 1), yrange=(0, None, 1),
+                          zrange=(0, None, 1),
+                          xlim=(-numpy.infty, numpy.infty),
+                          ylim=(-numpy.infty, numpy.infty),
+                          zlim=(-numpy.infty, numpy.infty)):
+        """Create a Matplotlib figure with gridlines.
+
+        Parameters
+        ----------
+        figsize : (float, float), optional
+            Width and height of the figure in inches; default is (12, 6).
+        color : str, optional
+            Color of the gridlines; default is black.
+        xlabel : str, optional
+            Label along the x axis; default is 'x'.
+        ylabel : str, optional
+            Label along the y axis; default is 'y'.
+        zlabel : str, optional
+            Label along the z axis; default is 'z'.
+        xrange : (int, int, int), optional
+            Index range (min, max, stride) to consider for x gridlines;
+            default is to consider all stations (0, None, 1).
+        yrange : (int, int, int), optional
+            Index range (min, max, stride) to consider for y gridlines;
+            default is to consider all stations (0, None, 1).
+        zrange : (int, int, int), optional
+            Index range (min, max, stride) to consider for z gridlines;
+            default is to consider all stations (0, None, 1).
+        xlim : (float, float), optional
+            Limits of the domain in the x direction to plot;
+            default is to plot the entire domain.
+        ylim : (float, float), optional
+            Limits of the domain in the y direction to plot;
+            default is to plot the entire domain.
+        zlim : (float, float), optional
+            Limits of the domain in the z direction to plot;
+            default is to plot the entire domain.
+
+        Returns
+        -------
+        matplotlib.figure.Figure
+            Matplotlib Figure.
+        array of matplotlib.axes.Axes
+            Array of Matplotlib Axes objects.
+
+        """
+        assert self.dim == 3
+        x, y, z = self.get_gridlines()
+        fig, ax = pyplot.subplots(ncols=3, figsize=figsize)
+        ax[0].set_xlabel(xlabel)
+        ax[0].set_ylabel(ylabel)
+        self._plot_gridlines_2d(ax[0], x, y, color=color,
+                                xrange=xrange, yrange=yrange,
+                                xlim=xlim, ylim=ylim)
+        ax[1].set_xlabel(xlabel)
+        ax[1].set_ylabel(zlabel)
+        self._plot_gridlines_2d(ax[1], x, z, color=color,
+                                xrange=xrange, yrange=zrange,
+                                xlim=xlim, ylim=zlim)
+        ax[2].set_xlabel(zlabel)
+        ax[2].set_ylabel(ylabel)
+        self._plot_gridlines_2d(ax[2], z, y, color=color,
+                                xrange=zrange, yrange=yrange,
+                                xlim=zlim, ylim=ylim)
+        return fig, ax
+
+    def _plot_gridlines_2d(self, ax, x, y, color='black',
+                           xrange=(0, None, 1), yrange=(0, None, 1),
+                           xlim=(-numpy.infty, numpy.infty),
+                           ylim=(-numpy.infty, numpy.infty)):
+        x = x[xrange[0]:xrange[1]:xrange[2]]
+        y = y[yrange[0]:yrange[1]:yrange[2]]
         mask, = numpy.where((x >= xlim[0]) & (x <= xlim[1]))
         x = x[mask]
         mask, = numpy.where((y >= ylim[0]) & (y <= ylim[1]))
@@ -151,7 +243,6 @@ class CartesianGrid():
         ax.axis('scaled', adjustable='box')
         ax.set_xlim(x[0], x[-1])
         ax.set_ylim(y[0], y[-1])
-        return fig, ax
 
     def print_info(self):
         """Print some information about the cell widths.
@@ -240,10 +331,11 @@ class GridLine():
         size = self.asarray().size
         return size
 
-    def asarray(self):
+    def asarray(self, tol=1e-12):
         """Return the gridline as a 1D NumPy array of floats."""
         vertices = numpy.concatenate(list(s.asarray() for s in self.segments))
-        return numpy.unique(vertices)
+        d = numpy.append(True, numpy.diff(vertices))
+        return vertices[d > tol]
 
     def yaml_node(self, ndigits=6):
         """Return the YAML configuration node for PetIBM.
