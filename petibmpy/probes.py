@@ -212,6 +212,49 @@ class ProbeVolume(_ProbeBase):
 
         """
         f = h5py.File(str(filepath), 'r')
+        # Load gridline positions.
+        mesh_group = f['mesh']
+        dim = len(mesh_group) - 1
+        mesh = mesh_group['x'][:], mesh_group['y'][:]
+        if dim == 3:
+            mesh = mesh + (mesh_group['z'][:],)
+        # Get gridline sizes to later reshape field values.
+        mesh_sizes = [line.size for line in mesh]
+        # Load index set (natural index of positions).
+        index_set = mesh_group['IS'][:].flatten()
+        # Load field values of the volume.
+        field_group = f[self.field]
+        time_str = f'{time:0.{ndigits}f}'
+        values = field_group[time_str][:]
+        # Re-arrange values based on index set.
+        mask = numpy.argsort(index_set)
+        values = values[mask].reshape(mesh_sizes[::-1])
+        f.close()
+        return mesh, values
+
+    def read_hdf5_deprecated(self, filepath, time, ndigits=6):
+        """Read the probe from a HDF5 file at a given time.
+
+        Method is deprecated and will be removed in next release.
+
+        Parameters
+        ----------
+        filepath : pathlib.Path or str
+            Path of file with the solution of the probe
+        time : float
+            Time value
+        ndigits : int, optional
+            Number of digits to round the time value, by default 6
+
+        Returns
+        -------
+        tuple
+            The mesh grid of the probe
+        numpy.ndarray
+            The probe values
+
+        """
+        f = h5py.File(str(filepath), 'r')
         mesh_group = f['mesh']
         dim = len(mesh_group)
         mesh = mesh_group['x'][:], mesh_group['y'][:]

@@ -21,6 +21,7 @@
 ### Changed
 
 * Update package version of dependencies.
+* (ProbeVolume) Read index set from HDF5 file and re-arrange sub-volume values (using the index set). Previous method is deprecated (`ProbeVolume.read_hdf5_deprecated_`) and will be removed in the next release.
 
 ### Fixed
 
