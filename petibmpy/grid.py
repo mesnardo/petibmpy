@@ -317,7 +317,7 @@ class GridLine():
         start = config['start']
         for node in config['subDomains']:
             node['start'] = start
-            if 'max_width' in node.keys():
+            if self._split_needed(node):
                 node1, node2 = self._split_uniform_and_stretch(node)
                 self.segments.append(Segment(config=node1))
                 self.segments.append(Segment(config=node2))
@@ -357,6 +357,40 @@ class GridLine():
                 'subDomains': [s.yaml_node(ndigits=ndigits)
                                for s in self.segments]}
         return node
+
+    def _split_needed(self, config):
+        """Check if need to split a configuration into uniform and stretched.
+
+        We only to split the configuration is the last width is bigger than
+        the target maximum width.
+
+        Parameters
+        ----------
+        config : dict
+            Configuration of the segment to split.
+
+        Returns
+        -------
+        bool
+            True is splitting is needed.
+
+        """
+        if 'max_width' not in config.keys():
+            return False
+        start, end = config['start'], config['end']  # segment limits
+        length = abs(end - start)  # segment length
+        ratio = config['stretchRatio']  # stretching ratio
+        first_width = config['width']  # first width of stretched portion
+        max_width = config['max_width']  # largest width of stretched portion
+        # Compute number of elements in the geometric series.
+        n = round(math.log(1 + length / first_width * (ratio - 1)) /
+                  math.log(ratio))
+        # Compute the width of the elements.
+        widths = numpy.full(n, ratio)
+        widths[0] = first_width
+        widths = numpy.cumprod(widths)
+        # Check if last width is bigger than target maximum width.
+        return widths[-1] > max_width
 
     def _split_uniform_and_stretch(self, config):
         """Split configuration of a stretched portion.
