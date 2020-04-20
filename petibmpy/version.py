@@ -4,7 +4,7 @@ import os
 
 
 _version_major = 0
-_version_minor = 1
+_version_minor = 2
 _version_micro = ''
 _version_extra = ''
 
