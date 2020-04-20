@@ -7,13 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
+  <link rel="canonical" href="https://github.com/mesnardo/petibmpy/changelog/">
   <link rel="shortcut icon" href="../img/favicon.ico">
   <title>Changelog - PetibmPy</title>
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
-  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
   
   <script>
     // Current page data
@@ -24,7 +25,7 @@
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
   <script src="../js/modernizr-2.8.3.min.js" defer></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
@@ -35,6 +36,7 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href=".." class="icon icon-home"> PetibmPy</a>
         <div role="search">
@@ -45,46 +47,50 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-	<ul class="current">
-	  
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="..">Home</a>
-	    </li>
-          
-            <li class="toctree-l1 current">
-		
-    <a class="current" href="./">Changelog</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l2"><a href="#change-log">Change Log</a></li>
-    
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Changelog</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#02">0.2</a>
         <ul>
-        
-            <li><a class="toctree-l3" href="#current-development">Current development</a></li>
-        
-            <li><a class="toctree-l3" href="#01">0.1</a></li>
-        
+    <li class="toctree-l3"><a class="reference internal" href="#added">Added</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#changed">Changed</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#fixed">Fixed</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#removed">Removed</a>
+    </li>
         </ul>
-    
-
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#01">0.1</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#added_1">Added</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#changed_1">Changed</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#fixed_1">Fixed</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#removed_1">Removed</a>
+    </li>
+        </ul>
+    </li>
     </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../contributing/">Contributing</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../api/">API</a>
-	    </li>
-          
-        </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../contributing/">Contributing</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/">API</a>
+                    </li>
+                </ul>
       </div>
-      &nbsp;
+    </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -112,6 +118,7 @@
       
     </li>
   </ul>
+  
   <hr/>
 </div>
           <div role="main">
@@ -119,20 +126,26 @@
               
                 <h1 id="change-log">Change Log</h1>
 <hr />
-<h2 id="current-development">Current development</h2>
+<h2 id="02">0.2</h2>
 <hr />
 <h3 id="added">Added</h3>
 <ul>
 <li>Documentation with Mkdocs (built on gh-pages using doctr during Travis CI job).</li>
 <li>Code coverage with coveralls.</li>
-<li>Unit-tests</li>
+<li>Unit-tests.</li>
 <li>Module to parse a PETSc log view file.</li>
 <li>Function to interpolate a 2D field from one grid to another.</li>
 <li>Module to create probes (volume and point) and to load data from files.</li>
+<li>Mesh feature to split the configuration of a stretched segment into two sub-configurations: one for a stretched segment where the maximum grid spacing is enforced, followed by one for a uniform segment (with a grid spacing equal to the maximum spacing of the previous stretched segment).</li>
+<li><code>CartesianGrid</code> method to plot the gridlines of a mesh in a Matplotlib figure.</li>
+<li><code>CartesianGrid</code> method to print some information about the grid spacings of a mesh (min, max, ratio).</li>
+<li>Functions to compute vorticity components.</li>
+<li>Function to delete datasets from a HDF5 file.</li>
 </ul>
 <h3 id="changed">Changed</h3>
 <ul>
 <li>Update package version of dependencies.</li>
+<li>(ProbeVolume) Read index set from HDF5 file and re-arrange sub-volume values (using the index set). Previous method is deprecated (<code>ProbeVolume.read_hdf5_deprecated_</code>) and will be removed in the next release.</li>
 </ul>
 <h3 id="fixed">Fixed</h3>
 <h3 id="removed">Removed</h3>
@@ -171,7 +184,7 @@
     
   </div>
 
-  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
       
         </div>
@@ -181,7 +194,7 @@
 
   </div>
 
-  <div class="rst-versions" role="note" style="cursor: pointer">
+  <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
           <a href="https://github.com/mesnardo/petibmpy/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
@@ -197,6 +210,11 @@
     <script>var base_url = '..';</script>
     <script src="../js/theme.js" defer></script>
       <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
 
 </body>
 </html>
