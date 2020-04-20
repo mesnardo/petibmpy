@@ -24,7 +24,7 @@ With Anaconda:
 ```shell
 conda env create --name=py36-petibmpy --file=environment.yaml
 conda activate py36-petibmpy
-python setup.py develop
+python setup.py install
 ```
 
 ## Contact

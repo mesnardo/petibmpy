@@ -5,8 +5,6 @@ loaders:
     search_path: [.]
 processors:
   - type: pydocmd
-  - type: filter
-    expression: not name.startswith('_') and not all(n.isupper() for n in name.split('_')[0]) and default()
 renderer:
   type: markdown
   filename: docs/api.md
