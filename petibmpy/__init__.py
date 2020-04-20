@@ -11,3 +11,4 @@ from .qcriterion import *
 from .regularize import *
 from .rotate import *
 from .version import __version__
+from .vorticity import *
