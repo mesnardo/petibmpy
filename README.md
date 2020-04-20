@@ -8,14 +8,14 @@ Small Python package to perform pre- and post-processing steps for [PetIBM](http
 
 ## Dependencies
 
-* PetIBM (last tested: `0.4.2`)
-* Python (`3.6.8`)
-* H5Py (`2.9.0`)
-* lxml (`4.3.3`)
-* Matplotlib (`3.0.3`)
-* NumPy (`1.16.3`)
-* Pyyaml (`5.1`)
-* SciPy (`1.2.1`)
+* PetIBM (last tested: `0.5.1`)
+* Python (`3.6.10`)
+* H5Py (`2.10.0`)
+* lxml (`4.5.0`)
+* Matplotlib (`3.1.1`)
+* NumPy (`1.18.1`)
+* Pyyaml (`5.3`)
+* SciPy (`1.3.2`)
 
 ## Installation
 
